@@ -11,7 +11,7 @@
 
 <meta name="author" content="Maurício Bueno" />
 
-<meta name="date" content="2022-09-03" />
+<meta name="date" content="2022-09-04" />
 
 <title>Introdução ao R</title>
 
@@ -1330,6 +1330,7 @@ if (window.hljs) {
 
 
 
+
 <style type="text/css">
 .main-container {
   max-width: 940px;
@@ -1350,6 +1351,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -1514,7 +1518,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Introdução ao R</h1>
 <h4 class="author">Maurício Bueno</h4>
-<h4 class="date">2022-09-03</h4>
+<h4 class="date">2022-09-04</h4>
 
 </div>
 
@@ -2023,11 +2027,11 @@ df</code></pre>
 ## $ id             &lt;chr&gt; &quot;s1&quot;, &quot;s2&quot;, &quot;s3&quot;, &quot;s4&quot;, &quot;s5&quot;, &quot;s6&quot;
 ## $ sexo_cod       &lt;chr&gt; &quot;m&quot;, &quot;f&quot;, &quot;m&quot;, &quot;m&quot;, &quot;f&quot;, &quot;m&quot;
 ## $ idade          &lt;dbl&gt; 25, 32, 78, 12, NA, 34
-## $ escolaridade   &lt;chr&gt; &quot;superior&quot;, &quot;medio&quot;, &quot;fundamental&quot;, &quot;fundamental&quot;, &quot;med~
+## $ escolaridade   &lt;chr&gt; &quot;superior&quot;, &quot;medio&quot;, &quot;fundamental&quot;, &quot;fundamental&quot;, &quot;med…
 ## $ renda          &lt;dbl&gt; 1000, 1500, 2000, 2500, 3000, 3500
 ## $ bonus          &lt;dbl&gt; 500, 500, 500, 500, 500, 500
 ## $ `renda total`  &lt;dbl&gt; 1500, 2000, 2500, 3000, 3500, 4000
-## $ `estado civil` &lt;chr&gt; &quot;casado/a&quot;, &quot;solteiro/a&quot;, &quot;viúvo/a&quot;, &quot;solteiro/a&quot;, &quot;cas~</code></pre>
+## $ `estado civil` &lt;chr&gt; &quot;casado/a&quot;, &quot;solteiro/a&quot;, &quot;viúvo/a&quot;, &quot;solteiro/a&quot;, &quot;cas…</code></pre>
 <pre class="r"><code>head(df)</code></pre>
 <pre><code>##   id sexo_cod idade escolaridade renda bonus renda total estado civil
 ## 1 s1        m    25     superior  1000   500        1500     casado/a
@@ -2301,12 +2305,15 @@ df &lt;- df[ ,c(&quot;id&quot;,&quot;sexo&quot;,&quot;idade&quot;,&quot;escolari
 <p>O <em>Internet Movie Database</em>, conhecido popularmente como IMDb,
 é uma base de dados de informação sobre cinema TV, música e games
 pertencente à Amazon. Vamos trabalhar com um arquivo que apresenta
-diversas informações de 1000 filmes. Para isso, siga os passos
+diversas informações de 1000 filmes. Para isso, temos que seguir dois
+passos: 1) salvar o arquivo em nosso computador e 2) importar o arquivo
+para dentro do R. Então vamos lá…</p>
+<p>Baixe o arquivo <a href="https://github.com/jmhbueno/IntroR_aula/blob/084bf8fa35d9b9a589b3808e3f49112a0705a655/imdb.rds">imdb.rds</a>
+e <strong>salve-o na pasta que você está utilizando para as aulas do
+R</strong>.</p>
+<p>Agora é necessário importar o arquivo <code>imdb.rds</code> para
+dentro do R, salvando-o como imdb. Para isso, use o código de importação
 abaixo:</p>
-<p>Salve o arquivo <code>imdb.rds</code> na pasta que você está
-utilizando para as aulas do R.</p>
-<p>Importe o arquivo <code>imdb.rds</code> para dentro do R, salvando-o
-como imdb. Use o código de importação abaixo:</p>
 <pre class="r"><code>imdb &lt;- readRDS(&quot;imdb.rds&quot;)
 # OBS: Esse código só irá funcionar se o arquivo estiver salvo na pasta em que vc está trabalhando.</code></pre>
 <p>Quantas linhas e colunas tem o dataframe imdb?</p>
@@ -2319,10 +2326,13 @@ Steven Spielberg ou James Cameron, que são do gênero drama ou ação
 <strong>(Somente em Genre1)</strong>.</p>
 <p>Renomeie as variáveis, traduzindo-as para o português.</p>
 <p>Vamos fazer mais alguns exercícios com um banco de dados sobre a
-população mundial. Salve o arquivo world_populations.cvs no diretório
-que você está utilizando para esta disciplina. Em seguida, importe esse
-banco de dados para dentro do R usando o código abaixo:</p>
+população mundial. Salve o arquivo <a href="https://1drv.ms/u/s!ApvtT9NG4aYok61vBm-Wnr5PWATIWA?e=Skesjw">world_populations.csv</a>
+no diretório que você está utilizando para esta disciplina. Em seguida,
+importe esse banco de dados para dentro do R usando o código abaixo:</p>
 <pre class="r"><code># Importar banco de dados de um arquivo .csv para um dataframe no R chamado world_population
+
+# Note que, neste caso, estamos usando a função read.csv() porque o arquivo está no formato .csv (informações separadas por vírgulas)
+
 wp &lt;- read.csv(&quot;world_population.csv&quot;, encoding = &quot;UTF-8&quot;)</code></pre>
 <p>Crie um dataframe chamado <code>wp1</code> que permita identificar as
 capitais de todos os países da América do Sul (países e capitais)</p>

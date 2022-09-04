@@ -582,12 +582,13 @@ saveRDS(imdb,"imdb.rds")
 
 O *Internet Movie Database*, conhecido popularmente como IMDb, é uma base de dados de informação sobre cinema TV, música e games pertencente à Amazon.
 Vamos trabalhar com um arquivo que apresenta diversas informações de 1000 filmes.
-Para isso, siga os passos abaixo:
+Para isso, temos que seguir dois passos: 1) salvar o arquivo em nosso computador e 2) importar o arquivo para dentro do R.
+Então vamos lá...
 
-Salve o arquivo `imdb.rds` na pasta que você está utilizando para as aulas do R.
+Baixe o arquivo [imdb.rds](https://github.com/jmhbueno/IntroR_aula/blob/084bf8fa35d9b9a589b3808e3f49112a0705a655/imdb.rds) e **salve-o na pasta que você está utilizando para as aulas do R**.
 
-Importe o arquivo `imdb.rds` para dentro do R, salvando-o como imdb.
-Use o código de importação abaixo:
+Agora é necessário importar o arquivo `imdb.rds` para dentro do R, salvando-o como imdb.
+Para isso, use o código de importação abaixo:
 
 ```{r}
 
@@ -650,11 +651,14 @@ names(imdb)
 ```
 
 Vamos fazer mais alguns exercícios com um banco de dados sobre a população mundial.
-Salve o arquivo world_populations.cvs no diretório que você está utilizando para esta disciplina.
+Salve o arquivo [world_populations.csv](https://1drv.ms/u/s!ApvtT9NG4aYok61vBm-Wnr5PWATIWA?e=Skesjw) no diretório que você está utilizando para esta disciplina.
 Em seguida, importe esse banco de dados para dentro do R usando o código abaixo:
 
 ```{r}
 # Importar banco de dados de um arquivo .csv para um dataframe no R chamado world_population
+
+# Note que, neste caso, estamos usando a função read.csv() porque o arquivo está no formato .csv (informações separadas por vírgulas)
+
 wp <- read.csv("world_population.csv", encoding = "UTF-8")
 ```
 
