@@ -62,14 +62,14 @@ Então, vamos instalar alguns pacotes que iremos utilizar durante o curso.
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 # Instalação dos pacotes
 
-if(!require(readxl)) install.packages("readxl",repos = "http://cran.us.r-project.org")
-
-if(!require(tidyverse)) install.packages("tidyverse",repos = "http://cran.us.r-project.org")
-if(!require(knitr)) install.packages("knitr",repos = "http://cran.us.r-project.org")
-if(!require(kableExtra)) install.packages("kableExtra", repos = "http://cran.us.r-project.org")
-if(!require(expss)) install.packages("expss", repos = "http://cran.us.r-project.org")
-
-if(!require(tibble)) install.packages("tibble")
+# if(!require(readxl)) install.packages("readxl",repos = "http://cran.us.r-project.org")
+# 
+# if(!require(tidyverse)) install.packages("tidyverse",repos = "http://cran.us.r-project.org")
+# if(!require(knitr)) install.packages("knitr",repos = "http://cran.us.r-project.org")
+# if(!require(kableExtra)) install.packages("kableExtra", repos = "http://cran.us.r-project.org")
+# if(!require(expss)) install.packages("expss", repos = "http://cran.us.r-project.org")
+# 
+# if(!require(tibble)) install.packages("tibble")
 # Ativacao dos pacotes ====
 
 library(readxl)
@@ -565,7 +565,7 @@ df <- df[ ,c("id","sexo","idade","escolaridade","estado_civil",
 
 # Exercícios 2
 
-```{r eval=FALSE, include=FALSE}
+```{r echo=TRUE}
 
 # Gerando um arquivo imdb em rds para os alunos
 
@@ -590,15 +590,14 @@ Baixe o arquivo [imdb.rds](https://github.com/jmhbueno/IntroR_aula/blob/084bf8fa
 Agora é necessário importar o arquivo `imdb.rds` para dentro do R, salvando-o como imdb.
 Para isso, use o código de importação abaixo:
 
-```{r}
-
+```{r echo=TRUE}
 imdb <- readRDS("imdb.rds")
 # OBS: Esse código só irá funcionar se o arquivo estiver salvo na pasta em que vc está trabalhando.
 ```
 
 Quantas linhas e colunas tem o dataframe imdb?
 
-```{r include=FALSE}
+```{r echo=TRUE}
 str(imdb)
 nrow(imdb)
 ncol(imdb)
@@ -606,29 +605,27 @@ ncol(imdb)
 
 Mostre os filmes desse banco de dados foram dirigidos por Woody Allen?
 
-```{r include=FALSE}
-
+```{r echo=TRUE}
 imdb[imdb$Director == "Woody Allen",c("Series_Title","Director")]
 ```
 
 Exiba um dataframe que mostra os títulos dos filmes dirigidos por Steven Spielberg que foram lançados até o ano 2000?
 
-```{r include=FALSE}
-
+```{r echo=TRUE}
 imdb[imdb$Director == "Steven Spielberg" & imdb$Released_Year <= 2000,
      c("Released_Year","Director","Series_Title")]
 ```
 
 Exiba um dataframe que mostre os titulos dos filmes dirigidos por Steven Spielberg ou James Cameron, que são do gênero drama ou ação **(Somente em Genre1)**.
 
-```{r include=FALSE}
-imdb[(imdb$Director == "James Cameron" | imdb$Director == "Steven Spielberg") & (imdb$Genre1 == "Drama" | imdb$Genre1 == "Action"), c(1,5,10)]
+```{r echo=TRUE}
 
+imdb[(imdb$Director == "James Cameron" | imdb$Director == "Steven Spielberg") & (imdb$Genre1 == "Drama" | imdb$Genre1 == "Action"), c("Series_Title","Genre1","Director")]
 ```
 
 Renomeie as variáveis, traduzindo-as para o português.
 
-```{r include=FALSE}
+```{r echo=TRUE}
 imdb <- 
 rename(imdb,c(título = "Series_Title",
               lançamento = "Released_Year",
@@ -654,36 +651,38 @@ Vamos fazer mais alguns exercícios com um banco de dados sobre a população mu
 Salve o arquivo [world_populations.csv](https://1drv.ms/u/s!ApvtT9NG4aYok61vBm-Wnr5PWATIWA?e=Skesjw) no diretório que você está utilizando para esta disciplina.
 Em seguida, importe esse banco de dados para dentro do R usando o código abaixo:
 
-```{r}
+```{r echo=TRUE}
 # Importar banco de dados de um arquivo .csv para um dataframe no R chamado world_population
 
 # Note que, neste caso, estamos usando a função read.csv() porque o arquivo está no formato .csv (informações separadas por vírgulas)
-
 wp <- read.csv("world_population.csv", encoding = "UTF-8")
+# wp_copia <- wp
 ```
 
 ```{r eval=FALSE, include=FALSE}
 # código para substituir pontos por espaço no nome das variáveis (não utilizei)
-wp <- gsub("\\.", " ",names(world_population))
+names(wp) <- gsub("\\.", " ",names(wp))
 ```
 
 Crie um dataframe chamado `wp1` que permita identificar as capitais de todos os países da América do Sul (países e capitais)
 
-```{r include=FALSE}
+```{r echo=TRUE}
 wp1 <- wp[wp$Continent == "South America",3:4]
 ```
 
 Para colocar a coluna "Country" em ordem alfabética, podemos usar a função `order()` dentro dos colchetes.
 Veja:
 
-```{r}
+```{r echo=TRUE}
 wp1[order(wp1$Country),]
 ```
 
 Selecione informações do dataframe wp que permita comparar os casos de Brazil, China, Rússia e Índia quanto às seguintes variáveis: população em 2020, densidade por km^2^, taxa de crescimento e porcentagem da população mundial.
 Salve essa seleção em um novo objeto chamado wp2.
 
-```{r eval=FALSE, include=FALSE}
+```{r echo=TRUE}
+names(wp)
+
 wp2 <- 
 wp[wp$Country == "Brazil" | wp$Country == "China" | wp$Country == "Russia" | wp$Country == "India",c(3,7,15:17)]
 ```
@@ -692,10 +691,865 @@ Ordene o dataframe wp2 pelas suas variáveis.
 Dica, você pode usar o argumento `decreasing = TRUE` dentro da função `order()` para ordenar a coluna de forma decrescente.
 Teste essa possibilidade.
 
-```{r eval=FALSE, include=FALSE}
+```{r echo=TRUE}
 wp2[order(wp2$Country),]
 wp2[order(wp2$X2020.Population, decreasing = TRUE),]
 wp2[order(wp2$`Density..per.km².`, decreasing = TRUE),]
 wp2[order(wp2$Growth.Rate, decreasing = TRUE),]
 wp2[order(wp2$World.Population.Percentage, decreasing = TRUE),]
+```
+
+## Importar e Combinar dataframes
+
+```{r include=FALSE}
+# importar planilha para o objetivo variables
+# df_copia1 <- df
+# df <- df_copia1
+variables <- read_xlsx("Variables.xlsx")
+
+```
+
+Nesse caso, temos o dataframe `variables`, com a informação de cinco variáveis dos mesmos sujeitos que constam no dataframe `df`.
+Então, gostaríamos de juntar esses dois dataframes.
+Para isso podemos usar duas funções.
+
+```{r}
+# Juntar a planilha importada no dataframe df
+saveRDS(df,"df.rds")
+df <- cbind(df,variables)
+```
+
+## Lidando com dados ausentes
+
+A função `na.omit` deleta as informações de uma linha inteira que contenha ao menos uma informação ausente.\
+
+A função `na.exclude` faz quase a mesma coisa, mas apenas omite a linha e acaba reportando alguns resultados, como resíduos, por exemplo, em análises de regressão.
+Além disso, também preserva o número de linhas do dataframe.
+Isso é importante em certas ocasiões que se deseja manter constante o número de linhas de um dataframe para coincidir com outro dataframe, por exemplo.
+
+```{r}
+na.omit(df)
+na.exclude(df)
+```
+
+Uma outra forma de lidar com dados ausentes (NA) é através de um argumento que geralmente é utilizado dentro de funções estatísticas ou gráficos para sinalizar que os valores NA devem ser ignorados. Esse argumento é o `na.rm`, que é um argumento lógico, ou seja deve ser apresentado como `na.rm = TRUE` ou `na.rm = FALSE`. Veja a aplicação desse argumento na função `mean()`, utilizada para calcular médias.
+
+```{r}
+# mean(df$idade)    # essa função acaba não rodando, porque entre os dados de idade existe um NA
+mean(df$idade, na.rm = TRUE) # dessa forma, conseguimos rodar a análise.
+```
+
+# Função `ifelse()`
+
+A função `ifelse()` é bastante útil para a manipulação de dados.
+Ela deve ser escrita da seguinte forma: `ifelse("condição", "se sim", "se não")` Traduzindo: observe a condição... se ela ocorrer, faça isso... se ela não ocorrer, faça aquilo.
+Exemplos:
+
+```{r}
+# se quisermos classificar a renda em dois grupos: menor igual a R$2000 e maior que R$2000, podemos usar a função ifelse()
+# ifelse(condição,se sim, se não)
+# traduzindo....
+# observe se, na variável renda, o valor é menor ou igual a 2000
+# se for, então atribua 1
+# se não for, então atribua 2.
+
+ifelse(df$renda <= 2000,1,2)
+
+# Se quisermos salvar esses dados como uma coluna do df...
+df$renda_cod <- ifelse(df$renda <= 2000,1,2)
+
+# se quisermos criar uma coluna atribuindo 1 para homens e 0 para os demais.
+ifelse(df$sexo == "masculino",1,0)
+
+# se quisermos identificar homens com escolaridade fundamental
+ifelse(df$sexo == "masculino" & df$escolaridade == "fundamental",1,0)
+
+# se quisermos identificar homens com escolaridade fundamental OU pessoa casadas.
+ifelse(df$sexo == "masculino" & df$escolaridade == "fundamental" | df$estado_civil == "casado/a",1,0)
+
+# se quisermos criar uma nova variável atribuindo 1 para solteiro, 2 para casado e 3 para viúvo... tínhamos visto o formato
+
+#df$escolaridade[df$escolaridade == "fundamental"] <- 1
+#df$escolaridade[df$escolaridade == "médio"] <- 2
+#df$escolaridade[df$escolaridade == "superior"] <- 3
+
+df$escola_cod <- ifelse(df$escolaridade == "fundamental",1,
+                        ifelse(df$escolaridade == "médio",2,3))
+
+ifelse(df$v1 == 1,5,
+       ifelse(df$v1 == 2,4,
+              ifelse(df$v1 == 3,3,
+                     ifelse(df$v1 == 4,2,1))))
+
+# Também é possível recodificar variáveis de jeito mais fácil, usando uma função do pacote expss.
+# Note que há questões no sentido de uma boa adaptação aos estudos e frases no sentido contrário. Nesses casos, não podemos somar os itens diretamente porque um valor 5 em v1 significa má adaptação, enquanto o mesmo valor 5  significa boa adaptação em v2. Então, não podemos somar coisas que têm significados diferentes.
+# Para lidar com isso, geralmente, fazemos a inversão de itens que estão na direção contrária do que queremos avaliar. Por exemplo, se queremos avaliar "adaptação escolar", então invertemos os itens v1 e v5, que estão na direção contrária.
+# Inverter significa transformar 1 em 5, 2 em 4, 3 em 3, 4 em 2 e 5 em 1. 
+# Para isso, usamos a função recode() do expss.
+
+recode(df[ ,c("v1","v2","v3","v4","v5")]) <- c(1~5,2~4,3~3,4~2,5~1)
+recode(df[ ,c("v1","v5")]) <- c(1~5,2~4,3~3,4~2,5~1)
+```
+
+# Exercícios 3
+### Importar arquivo do Excel para o R
+
+Nesta atividade, nós vamos um banco de dados público, que contém algumas informações sobre os respondentes e 50 itens de um teste de personalidade.
+
+Os itens estão na seguinte ordem: extroversão (E), neuroticismo (N), amabilidade (A), conscienciosidade (C) e Abertura (O).
+
+Copie o arquivo [big_five.xlsx](https://github.com/jmhbueno/Intro_R/blob/84e90af00f68cf20693e53d394709cc4538c2b40/big_five.xlsx) para a pasta de trabalho que você está usando para esta disciplina.
+
+Esse é um banco de dados estrangeiro, está codificado no sistema europeu.
+
+Use a função `read_excel()` do pacote `readxl` para importá-lo e salve-o como um objeto do R chamado `big_five`.
+
+Dentro dos parênteses informamos o nome do arquivo, entre aspas e com a extensão. Veja...
+
+```{r message=FALSE, warning=FALSE}
+
+# Você deve ter instalado o pacote readxl em nossa última aula.
+# se ainda não instalou, instale-o utilizando o comando install.packages("readxl")
+# Depois, não se esqueça de ativar o pacote com a função library(readxl)
+
+big_five <- read_excel("big_five.xlsx")
+
+# ao rodar o comando, o arquivo será importando e salvo como dataframe no R. Você verá um objeto com esse nome, no quadro superior à direita.
+```
+
+### Informações sobre o banco de dados
+
+O banco de dados utilizado neste exercício (baixado da internet) foram coletados (c. 2012) por meio de um teste de personalidade online interativo.
+Os itens foram avaliados em uma escala de cinco pontos, em que 1 = Discordo, 3 = Neutro, 5 = Concordo (0 = não respondido).
+Os itens foram os seguintes:
+
+E1 - I am the life of the party.
+
+E2 - I don't talk a lot.
+
+E3 - I feel comfortable around people.
+
+E4 - I keep in the background.
+
+E5 - I start conversations.
+
+E6 - I have little to say.
+
+E7 - I talk to a lot of different people at parties.
+
+E8 - I don't like to draw attention to myself.
+
+E9 - I don't mind being the center of attention.
+
+E10 - I am quiet around strangers.
+
+N1 - I get stressed out easily.
+
+N2 - I am relaxed most of the time.
+
+N3 - I worry about things.
+
+N4 - I seldom feel blue.
+
+N5 - I am easily disturbed.
+
+N6 - I get upset easily.
+
+N7 - I change my mood a lot.
+
+N8 - I have frequent mood swings.
+
+N9 - I get irritated easily.
+
+N10 - I often feel blue.
+
+A1 - I feel little concern for others.
+
+A2 - I am interested in people.
+
+A3 - I insult people.
+
+A4 - I sympathize with others' feelings.
+
+A5 - I am not interested in other people's problems.
+
+A6 - I have a soft heart.
+
+A7 - I am not really interested in others.
+
+A8 - I take time out for others.
+
+A9 - I feel others' emotions.
+
+A10 - I make people feel at ease.
+
+C1 - I am always prepared.
+
+C2 - I leave my belongings around.
+
+C3 - I pay attention to details.
+
+C4 - I make a mess of things.
+
+C5 - I get chores done right away.
+
+C6 - I often forget to put things back in their proper place.
+
+C7 - I like order.
+
+C8 - I shirk my duties.
+
+C9 - I follow a schedule.
+
+C10 - I am exacting in my work.
+
+O1 - I have a rich vocabulary.
+
+O2 - I have difficulty understanding abstract ideas.
+
+O3 - I have a vivid imagination.
+
+O4 - I am not interested in abstract ideas.
+
+O5 - I have excellent ideas.
+
+O6 - I do not have a good imagination.
+
+O7 - I am quick to understand things.
+
+O8 - I use difficult words.
+
+O9 - I spend time reflecting on things.
+
+O10 - I am full of ideas.
+
+**race** (raça): Foi escolhida pelos participantes em um menu suspenso.
+
+0 = Dados perdidos
+
+1 = Raça Mista
+
+2 = Ártico (Siberiano, Esquimó)
+
+3 = Caucasiano (Europeu)
+
+4 = Caucasiano (Indiano)
+
+5 = Caucasiano (Médio Leste)
+
+6 = Caucasiano (Norte Africano, Outro)
+
+7 = Indígena Australiano
+
+8 = Nativo Americano
+
+9 = Nordeste Asiático (Mongol, Tibetano, Japonês Coreano, etc)
+
+10 = Pacífico (Polinésia, Micronésia, etc.)
+
+11 = Sudeste Asiático (Chinês, Tailandês, Malaio, Filipino, etc.)
+
+12 = Oeste da África, Bosquímanos, Etíope
+
+13 = Outro
+
+**age**: inserida como texto (indivíduos que relataram idade \<13 anos não foram registrados)
+
+**engnat**: Resposta a "o inglês é sua língua nativa?": 0 = dados perdidos, 1 = sim, 2 = não
+
+**gender**: Escolhido em um menu suspenso.
+0 = dados perdidos, 1 = Masculino, 2 = Feminino, 3 = Outro
+
+**hand**: "Com que mão você escreve?".
+0 = dados perdidos, 1 = Direita, 2 = Esquerda, 3 = Ambos
+
+**country**: Código ISO do país.
+
+**source**: Como o participante soube do teste.
+1 = de outra página no site de teste 2 = do google 3 = do facebook 4 = de qualquer url com ".edu" em seu nome de domínio (por exemplo, xxx.edu, xxx.edu.au), 5 = não informado no arquivo 6 = outra fonte ou HTTP Referer não fornecido.
+
+1.  Visualise o banco de dados com as funções names() e view() para checar se tudo foi importado corretamente.
+
+```{r echo=TRUE}
+big_five_cópia <- big_five
+names(big_five)
+str(big_five)
+```
+
+2.  Quantas variáveis existem no banco de dados?
+
+```{r echo=TRUE}
+ncol(big_five)
+```
+
+3.  Quantos sujeitos constam no banco de dados?
+
+```{r echo=TRUE}
+nrow(big_five)
+```
+
+4.  Como as variáveis estão codificadas no banco de dados (character, numeric, factor, etc...)? Obs: uma variável numérica pode estar como número inteiro (int) ou como número decimal (dbl).
+
+```{r echo=TRUE}
+str(big_five)
+```
+
+5.  Renomeie as variáveis, traduzindo-as para o português: raça = race, idade = age, ing_nat = engnat, gênero = gender, mão_dom = hand, fonte = source, país = country. Salve essa modificação no dataframe *big_five*.
+
+```{r echo=TRUE}
+big_five <- rename(big_five,c(raça = race, idade = age, ing_nat = engnat, gênero = gender, mão_dom = hand, fonte = source, país = country))
+```
+
+6.  Crie uma coluna **id** para identificar os sujeitos com um "s" seguido do número do sujeito. Por exemplo, s1, s2, s3... sn. Posicione essa coluna como a primeira do banco de dados.
+
+```{r echo=TRUE}
+# para não ter que reordenar as variáveis depois que id estiver no final do dataframe, pode-se criar um vetor com os ids e depois fazer um cbind com o big_five.
+
+id <- paste("s",1:nrow(big_five),sep = "")
+big_five <- cbind(id,big_five)
+
+# essa função do dplyr reloca colunas para o início do dataframe
+# big_five %>% relocate(id) %>% names()
+```
+
+7.  As variáveis raça, ing_nat, gênero e mão_dom estão codificadas como número inteiro (integer, abreviado como int). Transforme-as em fatores.
+
+```{r echo=TRUE}
+str(big_five)
+big_five$raça <- as.factor(big_five$raça)
+big_five$ing_nat <- as.factor(big_five$ing_nat)
+big_five$gênero <- as.factor(big_five$gênero)
+big_five$mão_dom <- as.factor(big_five$mão_dom)
+big_five$"país" <- as.factor(big_five$"país")
+```
+
+8.  Agora é necessário atribuir os níveis de cada variável que foi transformada em fator. Os níveis para cada variável estão descritos no início deste documento. Lembrete: os níveis têm que ser atribuídos na mesma ordem dos valores. Por exemplo, na variável *gênero* o número 1 foi atribuído a *Masculino*, 2 a *Feminino* e 3 a *Outros.* Além disso, o valor 0 foi atribuído a respostas faltantes. Essas precisam ser transformadas em NA no R. Portanto, temos 0, 1, 2 e 3 no banco de dados, e os nomes desses níveis devem aparecer nessa ordem na linha de comando dessa variável.
+
+```{r echo=TRUE}
+levels(big_five$raça) <- c(NA,
+                           "Raça Mista",
+                           "Ártico (Siberiano, Esquimó)",
+                           "Caucasiano (Europeu)",
+                           "Caucasiano (Indiano)",
+                           "Caucasiano (Médio Leste)",
+                           "Caucasiano (Norte Africano, Outro)",
+                           "Indígena Australiano",
+                           "Nativo Americano",
+                           "Nordeste Asiático (Mongol, Tibetano, Japonês Coreano, etc)",
+                           "Pacífico (Polinésia, Micronésia, etc.)",
+                           "Sudeste Asiático (Chinês, Tailandês, Malaio, Filipino, etc.)",
+                           "Oeste da África, Bosquímanos, Etíope",
+                           "Outro"
+                           )
+```
+
+```{r echo=TRUE}
+levels(big_five$ing_nat) <- c(NA,"Sim","Não")
+#factor(big_five$ing_nat, levels = c(0,1,2), labels = c(NA,"Sim","Não"))
+```
+
+```{r echo=TRUE}
+levels(big_five$gênero) <- c(NA,"Masculino","Feminino","Outro")
+```
+
+```{r echo=TRUE}
+levels(big_five$mão_dom) <- c(NA,"Direita","Esquerda","Ambas")
+
+```
+
+9.  Rode a função `count(big_five,idade)` para contar quantas pessoas de cada idade há no banco de dados. Observe se há algo estranho.
+10. Selecione apenas os participantes com idades até 80 anos (inclusive) e provenientes dos Estados Unidos (US). Salve esses participantes em um novo dataframe chamado **bf80us**.
+
+```{r echo=TRUE}
+bf80us <- big_five[c(big_five$idade <= 80 & big_five$país == "US"), ]
+```
+
+11. Quantos sujeitos compõem esse novo banco de dados?
+
+```{r echo=TRUE}
+nrow(bf80us)
+```
+
+12. Exporte o scritp deste exercício no formato `.rds` usando a função `saveRDS(nome_do_dataframe,"nome_do_arquivo.rds")` e envie o arquivo pelo google classroom para cumprir a atividade desta semana.
+
+```{r echo=TRUE}
+saveRDS(bf80us,"bf80us.rds")
+
+```
+
+13. Voltando a trabalhar com o dataframe `big_five`, criar uma nova variável chamada faixa_etária com as seguintes faixas: até 20 anos (1), de 21 a 30 (2), 31 a 40 (3), 41 a 50 (4), 51 a 60 (5), 61 a 70 (6), 71 a 80 (7) e atribua NA para valores superiores a 80. Salve essa nova variável no dataframe big_five.
+
+```{r echo=TRUE}
+
+big_five$faixa_etária <- ifelse(big_five$idade <= 20, 1,
+                         ifelse(big_five$idade > 20 & big_five$idade <= 30,2,
+                         ifelse(big_five$idade > 30 & big_five$idade <= 40,3,
+                         ifelse(big_five$idade > 40 & big_five$idade <= 50,4,
+                         ifelse(big_five$idade > 50 & big_five$idade <= 60,5,
+                         ifelse(big_five$idade > 60 & big_five$idade <= 70,6,
+                         ifelse(big_five$idade > 70 & big_five$idade <= 80,7,NA)))))))
+str(big_five)
+```
+
+
+
+```{r eval=FALSE, include=FALSE}
+# 14. Atribua labels (`apply_labels()`) aos itens do teste de personalidade, usando as afirmações que foram respondidas pelos participantes da pesquisa. (PERGUNTA RETIRADA POR SE REFERIR AO apply-labels)
+# cópia_de_segurança2 <- big_five
+# library(expss)
+# big_five  <- apply_labels(big_five,
+# E1  = "I am the life of the party",
+# E2  = "I don't talk a lot",
+# E3  = "I feel comfortable around people",
+# E4  = "I keep in the background",
+# E5  = "I start conversations",
+# E6  = "I have little to say",
+# E7  = "I talk to a lot of different people at parties",
+# E8  = "I don't like to draw attention to myself",
+# E9  = "I don't mind being the center of attention",
+# E10 = "I am quiet around strangers",
+# N1  = "I get stressed out easily",
+# N2  = "I am relaxed most of the time",
+# N3  = "I worry about things",
+# N4  = "I seldom feel blue",
+# N5  = "I am easily disturbed",
+# N6  = "I get upset easily",
+# N7  = "I change my mood a lot",
+# N8  = "I have frequent mood swings",
+# N9  = "I get irritated easily",
+# N10 = "I often feel blue",
+# A1  = "I feel little concern for others",
+# A2  = "I am interested in people",
+# A3  = "I insult people",
+# A4  = "I sympathize with others' feelings",
+# A5  = "I am not interested in other people's problems",
+# A6  = "I have a soft heart",
+# A7  = "I am not really interested in others",
+# A8  = "I take time out for others",
+# A9  = "I feel others' emotions",
+# A10 = "I make people feel at ease",
+# C1  = "I am always prepared",
+# C2  = "I leave my belongings around",
+# C3  = "I pay attention to details",
+# C4  = "I make a mess of things",
+# C5  = "I get chores done right away",
+# C6  = "I often forget to put things back in their proper place",
+# C7  = "I like order",
+# C8  = "I shirk my duties",
+# C9  = "I follow a schedule",
+# C10 = "I am exacting in my work",
+# O1  = "I have a rich vocabulary.",
+# O2  = "I have difficulty understanding abstract ideas",
+# O3  = "I have a vivid imagination",
+# O4  = "I am not interested in abstract ideas",
+# O5  = "I have excellent ideas",
+# O6  = "I do not have a good imagination",
+# O7  = "I am quick to understand things",
+# O8  = "I use difficult words",
+# O9  = "I spend time reflecting on things",
+# O10 = "I am full of ideas")
+```
+
+14. Nos cinco fatores desse instrumento, há itens na direção do fator e itens no sentido inverso. Por exemplo, na escala de extroversão há itens como *"I am the life of the party"*, que descreve uma pessoa extrovertida, e itens como *"I don't talk a lot"*, que descreve uma pessoa introvertida. Esse problema precisa ser resolvido antes de calcularmos os escores das pessoas nesse fator. Se as pessoas responderam esses itens usando uma escala Likert de 5 pontos, não podemos somar os valores desses itens diretamente porque eles têm significados diferentes. Por exemplo, se uma pessoa atribuiu valor 5 ao item *"I am the life of the party"*, esse 5 indica que ela é muito **ex**trovertida. Mas o mesmo valor 5 atribuído ao item *"I don't talk a lot"* indica que a pessoa é muito **in**trovertida. Portanto, temos um problema porque o mesmo valor (5) significa coisas diferentes em itens diferentes. Para evitarmos esse problema temos que inverter os valores dos itens que vão na direção da introversão, mudar o 1 para 5, o 2 para 4, o 3 permanece 3, o 4 para 2 e o 5 para 1.
+
+Faça essas alterações usando a função `ifelse()` para os itens invertidos do fator Exgtroversão e a `recode()` para os itens invertidos dos demais fatores ()
+
+```{r echo=TRUE}
+library(expss)
+
+# uma solução seria usar ifelse
+#big_five$E2_mod <- 
+ifelse(big_five$E2 == 1,5,ifelse(big_five$E2 == 2,4,ifelse(big_five$E2 == 3,3,ifelse(big_five$E2 == 4,2,ifelse(big_five$E2 == 5,1,NA)))))
+ifelse(big_five$E4 == 1,5,ifelse(big_five$E4 == 2,4,ifelse(big_five$E4 == 3,3,ifelse(big_five$E4 == 4,2,ifelse(big_five$E4 == 5,1,NA)))))
+ifelse(big_five$E6 == 1,5,ifelse(big_five$E6 == 2,4,ifelse(big_five$E6 == 3,3,ifelse(big_five$E6 == 4,2,ifelse(big_five$E6 == 5,1,NA)))))
+ifelse(big_five$E8 == 1,5,ifelse(big_five$E8 == 2,4,ifelse(big_five$E8 == 3,3,ifelse(big_five$E8 == 4,2,ifelse(big_five$E8 == 5,1,NA)))))
+
+# no entanto, essa solução exigiria criar um código desse para cada variável.
+# a função recode() do expss facilita a modificação de variáveis em bloco.
+
+recode(big_five[ ,c('E2','E4','E6','E8','E10','N2','N4','A1','A3','A5','A7','C2','C4','C6','C8','O2','O4','O6')]) <- c(1~5,2~4,3~3,4~2,5~1,NA~NA)
+```
+
+# Importar e exportar arquivos de/para outros formatos
+
+Há vários pacotes para importação de arquivos elaborados em outros programas, como o Excel e o SPSS, por exemplo, que são muito comuns em pesquisas em Psicologia.
+De forma semelhante, às vezes, analisamos os dados no R/RStudio, salvamos a planilha em um dataframe, mas gostaríamos de exportar essa planilha para outros formatos, para serem lidos por outros programas, por exemplo.
+A seguir, veremos como fazer isso, começando pela **exportação de arquivos**.
+
+## Exportação de arquivos \### Usando função da base
+
+```{r}
+
+saveRDS(df,"df.rds") # formato reconhecido pelo R
+```
+
+### Usando funções do pacote utils
+
+```{r}
+
+ write.csv(df,               # dataframe a ser exportado
+           "df1.csv",         # nome a ser dado ao dataframe exportado
+           sep = ",",         # caractere que separa as colunas
+           na = "NA",         # como codificar dados faltantes
+           dec = ".",         # que caractere usar para separar casas decimais
+           col.names = TRUE)  # informar se Há (TRUE) ou não (FALSE) nome das colunas no dataframe
+
+ write.csv2(df,              # semelhante ao comando anterior, mas assumindo sep = ";" e dec = ","
+           "df1.csv",
+           sep = ";",
+           na = "NA",
+           dec = ",",
+           col.names = TRUE)
+
+### OBS.: Essas funções acima podem ser resumidas para...
+write.csv(df, "df.csv")
+write.csv2(df, "df.csv")
+```
+
+### Usando funções do pacote readr
+
+```{r}
+# Carregar os pacotes readr
+# install.packages("readr")
+library(readr)
+
+write_csv(
+  df,
+  "df.csv",
+  na = "NA",
+  col_names = TRUE)
+
+write_csv2(
+  df,
+  "df.csv",
+  na = "NA",
+  col_names = TRUE)
+
+write_excel_csv(
+  df,
+  "df.csv",
+  na = "NA",
+  col_names = TRUE,
+  delim = ",")
+
+write_excel_csv2(
+  df,
+  "df.csv",
+  na = "NA",
+  col_names = TRUE,
+  delim = ";")
+```
+
+## Importação de arquivos
+
+### Importando arquivos em `.csv` com o pacote `utils`
+
+```{r}
+# Importando arquivos em .csv
+
+## Usando o pacote utils
+
+#### read.csv(df.csv, header = TRUE, sep = ",", dec = ".", encoding = "UTF-8")
+read.csv2("df.csv",             # nome do arquivo a ser importado (OBS. deve estar no diretório de trabalho)
+          header = TRUE,        # TRUE, para arquivos com nomes das colunas
+          sep = ";",            # caractere separador das colunas
+          dec = ",",            # caractere separador de casas decimais.
+          encoding = "UTF-8")   # usar codificação UTF-8 para que os acentos, etc. venham de forma correta.
+```
+
+### Importando arquivos em `.csv` com o pacote `readr`
+
+```{r}
+## Usando o pacote readr
+
+# read_csv2("df.csv", col_names = TRUE, na = "NA", skip_empty_rows = TRUE)
+
+# OBS: essa função não estava funcionando em 17/09/2022. Não consegui descobrir porque. Então desliguei a função para poder prosseguir.
+
+```
+
+### Importando arquivos em `.xls` e `.xlsx` (Excel) com o pacote `readxl`
+
+```{r}
+## Usando o pacote readxl para importar arquivos em excel
+library(readxl)
+read_excel("df.xlsx", col_names = TRUE)
+```
+
+### Importando arquivos em `.sav` (SPSS) com o pacote `haven`
+
+```{r}
+## Usando o pacote haven para importar arquivos do SPSS
+
+# install.packages("haven")
+library(haven)
+
+read_sav("df.sav")
+```
+
+# Pacote `tidyverse`
+
+O `tidyverse` é uma família de pacotes que compartilham a mesma filosofia e linguagem de programação.
+Fazem parte dessa família pacotes como o `dplyr`, o `tidyr`, o `readr` e o `ggplot2`, entre outros.
+O `dplyr` e o `tidyr` são pacotes com funções para a **manipulação de dados**, O `ggplot2` é um pacote poderoso para fazer **gráficos** e o `readr` permite a importação e exportação de dados.
+
+Uma função básica do Tidyverse é a **função pipe** `%>%`, que se obtém pressionando as teclas `CTRL+SHIFT+M`.
+Essa função pode ser interpretada como "então" e permite escrever códigos na sequência em que ocorrem.
+Por exemplo:
+
+```{r}
+# para criar e inserir uma variável no banco de dados, ao invés de usar o sistema tradicional, podemos usar a linguagem tidy.
+
+df %>% group_by(sexo) %>% summarise(média = mean(idade))
+df %>% group_by(sexo) %>% summarise(média = mean(idade, na.rm = TRUE))
+str(df)
+```
+
+Na sintaxe acima, usamos algumas funções que serão discutidas a seguir, mas é possível ver como escrevemos os códigos usando o pipe.
+
+Em português, esse código ficaria assim: pegue o dataframe df, **então** agrupe pela variável sexo, **então** calcule as médias de idade.
+
+Esse comando ajuda bastante a escrever códigos mais complexos.
+
+## Operador `%in%`
+
+O operador `%in%` pode ser traduzido como *está contido em*. Então, se quiser saber se a opção "não-binário" está contida numa variável sexo, pode-se usar o seguinte comando:
+
+```{r}
+"Não-binário" %in% df$sexo
+
+# se quisermos saber quais sujeitos são casados ou solteiros...
+
+df$estado_civil %in% c("casado/a","solteiro/a")
+
+# se quisermos saber se as opções casado/a e solteiro/a foram assinaladas na variável estado_civil...
+
+c("casado/a","solteiro/a") %in% df$estado_civil
+
+# se quisermos saber se há menores de 18 anos na amostra
+
+df$idade %in% 0:17
+```
+
+Mais a frente veremos uma combinação do operador `%in%` com a função `filter()`. 
+
+## Pacote `dplyr`
+
+Esse pacote da família `tidyverse` apresenta um conjunto de funções que permite selecionar variáveis, filtrar observações, selecionar linhas, organizar apresentação de resultados, criar e/ou modificar variáveis, agrupar variáveis, entre outras.
+Esses comandos são conhecidos como os **verbos do dplyr**.
+
+```{r echo=FALSE}
+tidyverse_table <- data.frame("Funções tidyverse(dplyer)"=c(
+                              "select()",
+                              "filter()",
+                              "slice()",
+                              "arrange()",
+                              "mutate()",
+                              "group_by()"),
+                              "O que faz"=c("seleciona colunas do dataframe",
+                                            "filtra linhas por categoria de variável",
+                                            "filtra linhas inteiras do dataframe",
+                                            "reordena as linhas do dataframe",
+                                            "cria novas colunas no dataframe",
+                                            "realiza os comandos que vierem a seguir pelas variáveis selecionadas"))
+library(knitr)
+
+tidyverse_table %>% kable(format = "markdown")
+```
+
+Vamos testar uma por uma, com o nosso dataframe df, começando pela função `select()`, que seleciona **colunas** do dataframe.
+
+### select()
+
+```{r}
+# SELECT
+
+names(df) # visualisar número das colunas
+df %>% names() %>% as.data.frame()
+
+# pegar df e selecionar as colunas 1,2,4,5 e de 9 a 13
+
+## Antes a gente fazia assim...
+df[ ,c("id","sexo","escolaridade","estado_civil","v1","v2","v3","v4","v5")]
+
+## Agora usando a função select()
+
+df %>% select(1,2,4,5,9:13) # o comando pipe diz o que é pra fazer com o dataframe 
+
+df %>% select(id, sexo, escolaridade, estado_civil,v1,v2,v3,v4,v5)
+### note que o dplyr não requer aspas para o nome das colunas.
+
+
+# podemos salvar esse novo dataframe com um novo nome. Ao rodar o código abaixo, será criado um objeto df1 no Global Environment
+
+df1 <- df %>% select(1,2,4,5,9:13)
+
+# usar select para deletar uma coluna 
+
+df1 %>% select(-4) # deletar a coluna estado_civil
+
+# usar select para reordenar as colunas
+
+df1 %>% select(5:9,1,3,2,4)  
+
+## OU
+
+df1 %>% select(5:9,everything())
+
+# Outras possibilidades
+
+df %>% select(contains("cola"))
+
+df %>% select(ends_with("dade"))
+
+df %>% select(starts_with("v"))
+
+# vamos aproveitar e deletar as duas últimas colunas do df, colunas 14 e 15
+
+df %>% select(-14,-15)
+df %>% select(-c(14,15))
+df %>% select(-c(renda_cod,escola_cod))
+
+df <- df %>% select(-c(renda_cod,escola_cod))
+
+# se quiser selecionar um grupo de variáveis que começam com as mesmas letras
+
+df %>% select(starts_with("v"))
+df %>% select(starts_with(c("v","sum","mean")))
+
+# ou selecionar variáveis que terminam com as mesmas letras (ou números)
+
+df %>% select(ends_with("dade"))
+
+# seleção de variáveis usando operadores booleanos
+
+df %>% select(!ends_with("dade"))
+
+df %>% select(where(is.factor))
+
+df %>% select(where(is.numeric) & starts_with(c("i")))
+df %>% select(where(is.numeric) & starts_with(c("i","v")))
+
+```
+
+### filter()
+
+Se a função `select()` permite a seleção de colunas de um dataframe, a função `filter()` permite a seleção de **linhas**.
+
+```{r}
+## se quisermos filtrar somente os participantes do sexo masculino
+
+df %>% filter(sexo == "masculino")
+
+## pode-se acrescentar outras variáveis para filtrar
+## por exemplo, filtrar participantes do sexo masculino, com nivel fundamental de escolaridade
+
+df %>% filter(sexo == "masculino",escolaridade == "fundamental")
+
+## ou ainda participantes do sexo masculino, do esnisno fundamental e solteiro/a
+df %>% filter(sexo == "masculino",escolaridade == "fundamental",estado_civil == "solteiro/a")
+
+## se quisermos retirar do banco todos os participantes com ensino fundamental.
+## observe que o ponto de exclamação no código é uma espécie de "tudo, menos..."
+df %>% filter(!escolaridade == "fundamental")
+df %>% filter(!escolaridade == "fundamental",renda>=3000)
+
+## ou, se quiser selecionar participantes com renda_total superior ou igual a R$ 2000,00.
+df %>% filter(renda_total >= 2000)
+
+## se quisermos selecionar uma subamostra com base em duas ou mais informações DE UMA MESMA VARIÁVEL, podemos usar a função %in%
+
+df %>% filter(escolaridade == "fundamental", escolaridade == "superior") 
+# Esse comando acima NÃO FUNCIONA porque estamos tentando selecionar duas condições dentro da mesma variável. Aí, nesse caso precisamos combinar a função filter com o operador %in%
+
+df %>% filter(escolaridade %in% c("fundamental", "médio")) # FUNCIONA
+
+
+## OBS.: lembrando que se quisermos salvar a filtragem em um novo dataframe...
+df_renda_maior2000 <- df %>% filter(renda_total >= 2000)
+```
+
+As funções `select()` e `filter()` são muito úteis para limpeza do banco de dados.
+Por exemplo, quando baixamos um banco de dados do google formulário, ele vem com as informações de data e hora que o participante respondeu o questionário, com as respoostas ao TCLE, que normalmente não iremos utilizar nas análises.
+Então, podemos deletá-las usando a função `select()`.
+Outra aplicação muito comum é para criar um *subset* do arquivo base, que contenha somente os itens de um dos instrumentos, para análise de suas propriedades psicométrias.\
+
+De forma semelhante, podemos usar a função `filter()` para eliminar sujeitos que não atendem aos critérios de inclusão da pesquisa.
+Ou selecionar um *subset* do banco de dados, que contenha os sujeitos de interesse.
+
+### slice()
+
+Uma opção para selecionar casos com base na linha inteira é a função `slice()`.
+
+```{r}
+# selecionar linhas inteiras
+df %>% slice(1:3)
+df %>% slice(1,4,6)
+
+# selecionar por exclusão
+df %>% slice(-1)
+df %>% slice(-c(1,6))
+df %>% slice(-1,-6)
+
+# sortear uma proporção do banco de dados
+df %>% slice_sample(prop = .35)
+df %>% slice_sample(n=3)
+```
+
+### arrange()
+
+Por sua vez, a função `arrange()`, ordena os dados por um critério.
+
+```{r}
+# Ordenar df por idade
+df %>% arrange(idade)
+
+# Ordenar df por ordem decrescente de renda_total
+df %>% arrange(desc(renda_total))
+
+# É possível inserir mais de uma variável, por exemplo, sexo e renda_total
+df %>% arrange(sexo,desc(renda_total))
+```
+
+A função `mutate()` permite criar variáveis dentro de um dataframe.
+É muito útil para calcular pontuações a partir de itens, por exemplo, ou para fazer transformações de outras variáveis.\
+
+### mutate
+
+```{r}
+# calcular as pontuações das pessoas nos itens de v1 a v5.
+df %>% mutate(escore = v1+v2+v3+v4+v5)
+df %>% mutate(escore = (v1+v2+v3+v4+v5)/5)
+# se quisermos salvar a nova variável, então o código seria...
+df <- df %>% mutate(escore = v1+v2+v3+v4+v5)
+
+# remover label da variável escore
+# escore <- unvr(df$escore)
+# df$escore <- escore
+# glimpse(df)
+```
+
+### group_by
+
+A função `group_by` agrupa os resultados de uma operação e, geralmente, é usada juntamente com alguma outra operação, como por exemplo, a função `summarise()`.
+
+```{r}
+
+# calcular as médias da variável escore, por sexo (grupo_by(sexo))
+df %>% group_by(sexo) %>% count(escolaridade)
+df %>% group_by(sexo) %>% summarise(mean(escore))
+df %>% group_by(sexo,escolaridade) %>% summarise(mean(escore))
+```
+
+### rename
+
+Às vezes, é necessário renomear uma ou mais variáveis de um dataframe.
+Para isso, podemos usar a função `rename()` do dyplr.
+
+```{r}
+df %>% rename(item1 = v1,
+              item2 = v2,
+              item3 = v3,
+              item4 = v4,
+              item5 = v5)
 ```

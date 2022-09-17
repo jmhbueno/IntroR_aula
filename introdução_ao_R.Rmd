@@ -69,7 +69,7 @@ if(!require(expss)) install.packages("expss", repos = "http://cran.us.r-project.
 
 if(!require(tibble)) install.packages("tibble")
 # Ativacao dos pacotes ====
-
+library(readr)
 library(readxl)
 library(tidyverse)
 library(knitr)
@@ -475,7 +475,10 @@ df <- df[ ,c("id","sexo","idade","escolaridade","estado_civil",
 
 ```{r include=FALSE}
 # importar planilha para o objetivo variables
+# df_copia1 <- df
+# df <- df_copia1
 variables <- read_xlsx("Variables.xlsx")
+
 ```
 
 Nesse caso, temos o dataframe `variables`, com a informação de cinco variáveis dos mesmos sujeitos que constam no dataframe `df`.
@@ -484,12 +487,13 @@ Para isso podemos usar duas funções.
 
 ```{r}
 # Juntar a planilha importada no dataframe df
+saveRDS(df,"df.rds")
 df <- cbind(df,variables)
 ```
 
 ## Atribuição de labels
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # Atribuir labels às variáveis v1 a v5
 # vamos supor que essa variávels correspondessem às seguintes perguntas:
 # v1 = Você costuma se atrasar para as aulas?
@@ -506,8 +510,6 @@ df  <- apply_labels(df,
        v4 = 'Quanto você gosta de sua escola?',
        v5 = 'Quanto você procrastina para estudar?')
 
-str(df)
-#view(df)
 ```
 
 ## Lidando com dados ausentes
@@ -523,7 +525,7 @@ na.omit(df)
 na.exclude(df)
 ```
 
-Outra função bastante empregada é a `na.rm`, que normalmente é usada dentro de funções estatísticas para sinalizar que os valores NA devem ser ignorados.
+Uma outra forma de lidar com dados ausentes (NA) é através de um argumento que geralmente é utilizado dentro de funções estatísticas ou gráficos para sinalizar que os valores NA devem ser ignorados. Esse argumento é o `na.rm`, que é um argumento lógico, ou seja deve ser apresentado como `na.rm = TRUE` ou `na.rm = FALSE`. Veja a aplicação desse argumento na função `mean()`, utilizada para calcular médias.
 
 ```{r}
 # mean(df$idade)    # essa função acaba não rodando, porque entre os dados de idade existe um NA
@@ -587,6 +589,7 @@ recode(df[ ,c("v1","v5")]) <- c(1~5,2~4,3~3,4~2,5~1)
 Há vários pacotes para importação de arquivos elaborados em outros programas, como o Excel e o SPSS, por exemplo, que são muito comuns em pesquisas em Psicologia.
 De forma semelhante, às vezes, analisamos os dados no R/RStudio, salvamos a planilha em um dataframe, mas gostaríamos de exportar essa planilha para outros formatos, para serem lidos por outros programas, por exemplo.
 A seguir, veremos como fazer isso, começando pela **exportação de arquivos**.
+
 ## Exportação de arquivos \### Usando função da base
 
 ```{r}
@@ -717,34 +720,42 @@ str(df)
 ```
 
 Na sintaxe acima, usamos algumas funções que serão discutidas a seguir, mas é possível ver como escrevemos os códigos usando o pipe.
+
 Em português, esse código ficaria assim: pegue o dataframe df, **então** agrupe pela variável sexo, **então** calcule as médias de idade.
+
 Esse comando ajuda bastante a escrever códigos mais complexos.
 
 # Comando `%in%`
 
 ```{r}
-which(seq(1,by=1,length=10) %in% seq(4,by=1,length=9))
+which(seq(1,by=1,length=10) %in% seq(4,by=1,length=3))
+
+df$estado_civil %in% c("casado/a","solteiro/a")
+
+c("casado/a","solteiro/a") %in% df$estado_civil
+
+12 %in% df$idade
 ```
 
 Usando %in% para adicionar uma nova coluna a um dataframe em R
 
 ```{r}
 # Creating a dataframe:
-# dataf2 <- data.frame(Type  = c("Fruit","Fruit","Fruit","Fruit","Fruit",
-#                                "Vegetable", "Vegetable", "Vegetable", "Vegetable", "Fruit"),
-#                      Name  = c("Red Apple","Strawberries","Orange","Watermelon","Papaya",
-#                                "Carrot","Tomato","Chili","Cucumber", "Green Apple"),
-#                      Color = c(NA, "Red", "Orange", "Red", "Green",
-#                                "Orange", "Red", "Red", "Green", "Green"))
-# 
-# 
-# # Adding a New Column:
-# dataf2 <- within(dataf2, {
-#   Red_Fruit = "No"
-#   Red_Fruit[Type %in% c("Fruit")] = "No"
-#   Red_Fruit[Type %in% "Vegetable"] = "No"
-#   Red_Fruit[Name %in% c("Red Apple", "Strawberries", "Watermelon", "Chili", "Tomato")] = "Yes"
-# })
+dataf2 <- data.frame(Type  = c("Fruit","Fruit","Fruit","Fruit","Fruit",
+                               "Vegetable", "Vegetable", "Vegetable", "Vegetable", "Fruit"),
+                     Name  = c("Red Apple","Strawberries","Orange","Watermelon","Papaya",
+                               "Carrot","Tomato","Chili","Cucumber", "Green Apple"),
+                     Color = c(NA, "Red", "Orange", "Red", "Green",
+                               "Orange", "Red", "Red", "Green", "Green"))
+
+
+# Adding a New Column:
+dataf2 <- within(dataf2, {
+  Red_Fruit = "No"
+  Red_Fruit[Type %in% c("Fruit")] = "No"
+  Red_Fruit[Type %in% "Vegetable"] = "No"
+  Red_Fruit[Name %in% c("Red Apple", "Strawberries", "Watermelon", "Chili", "Tomato")] = "Yes"
+})
 ```
 
 # Pacote `dplyr`
@@ -865,6 +876,13 @@ df %>% filter(!escolaridade == "fundamental",renda>=3000)
 
 ## ou, se quiser selecionar participantes com renda_total superior ou igual a R$ 2000,00.
 df %>% filter(renda_total >= 2000)
+
+## se quisermos selecionar uma subamostra com base em duas ou mais informações DE UMA MESMA VARIÁVEL, podemos usar a função %in%
+
+df %>% filter(escolaridade == "fundamental", escolaridade == "superior") # NÃO FUNCIONA
+
+df %>% filter(escolaridade %in% c("fundamental", "médio")) # FUNCIONA
+
 
 ## OBS.: lembrando que se quisermos salvar a filtragem em um novo dataframe...
 df_renda_maior2000 <- df %>% filter(renda_total >= 2000)
