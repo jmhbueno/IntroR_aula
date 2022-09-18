@@ -71,7 +71,7 @@ Então, vamos instalar alguns pacotes que iremos utilizar durante o curso.
 # 
 # if(!require(tibble)) install.packages("tibble")
 # Ativacao dos pacotes ====
-
+library(readr)
 library(readxl)
 library(tidyverse)
 library(knitr)
@@ -569,15 +569,15 @@ df <- df[ ,c("id","sexo","idade","escolaridade","estado_civil",
 
 # Gerando um arquivo imdb em rds para os alunos
 
-imdb <- read.csv("imdb_top_1000.csv",encoding = "UTF-8")
+imdb1000 <- read.csv("imdb_top_1000.csv",encoding = "UTF-8")
 
 # Codigo abaixo para limpar variáveis de texto
-# imdb <- imdb[,-c(1,8)]
+# imdb1000 <- imdb1000[,-c(1,8)]
 
 # Separar a variável gênero em três variáveis (Genre1, Genre2 e Genre3)
-imdb <- imdb %>% separate(Genre, sep = ",", into = c("Genre1","Genre2","Genre3"))
+imdb1000 <- imdb1000 %>% separate(Genre, sep = ",", into = c("Genre1","Genre2","Genre3"))
 
-saveRDS(imdb,"imdb.rds")
+saveRDS(imdb1000,"imdb1000.rds")
 ```
 
 O *Internet Movie Database*, conhecido popularmente como IMDb, é uma base de dados de informação sobre cinema TV, música e games pertencente à Amazon.
@@ -585,34 +585,34 @@ Vamos trabalhar com um arquivo que apresenta diversas informações de 1000 film
 Para isso, temos que seguir dois passos: 1) salvar o arquivo em nosso computador e 2) importar o arquivo para dentro do R.
 Então vamos lá...
 
-Baixe o arquivo [imdb.rds](https://github.com/jmhbueno/IntroR_aula/blob/084bf8fa35d9b9a589b3808e3f49112a0705a655/imdb.rds) e **salve-o na pasta que você está utilizando para as aulas do R**.
+Baixe o arquivo [imdb1000.rds](ATUALIZAR ENDEREÇO) e **salve-o na pasta que você está utilizando para as aulas do R**.
 
 Agora é necessário importar o arquivo `imdb.rds` para dentro do R, salvando-o como imdb.
 Para isso, use o código de importação abaixo:
 
 ```{r echo=TRUE}
-imdb <- readRDS("imdb.rds")
+imdb1000 <- readRDS("imdb1000.rds")
 # OBS: Esse código só irá funcionar se o arquivo estiver salvo na pasta em que vc está trabalhando.
 ```
 
 Quantas linhas e colunas tem o dataframe imdb?
 
 ```{r echo=TRUE}
-str(imdb)
-nrow(imdb)
-ncol(imdb)
+str(imdb1000)
+nrow(imdb1000)
+ncol(imdb1000)
 ```
 
 Mostre os filmes desse banco de dados foram dirigidos por Woody Allen?
 
 ```{r echo=TRUE}
-imdb[imdb$Director == "Woody Allen",c("Series_Title","Director")]
+imdb1000[imdb1000$Director == "Woody Allen",c("Series_Title","Director")]
 ```
 
 Exiba um dataframe que mostra os títulos dos filmes dirigidos por Steven Spielberg que foram lançados até o ano 2000?
 
 ```{r echo=TRUE}
-imdb[imdb$Director == "Steven Spielberg" & imdb$Released_Year <= 2000,
+imdb1000[imdb1000$Director == "Steven Spielberg" & imdb1000$Released_Year <= 2000,
      c("Released_Year","Director","Series_Title")]
 ```
 
@@ -620,14 +620,14 @@ Exiba um dataframe que mostre os titulos dos filmes dirigidos por Steven Spielbe
 
 ```{r echo=TRUE}
 
-imdb[(imdb$Director == "James Cameron" | imdb$Director == "Steven Spielberg") & (imdb$Genre1 == "Drama" | imdb$Genre1 == "Action"), c("Series_Title","Genre1","Director")]
+imdb1000[(imdb1000$Director == "James Cameron" | imdb1000$Director == "Steven Spielberg") & (imdb1000$Genre1 == "Drama" | imdb1000$Genre1 == "Action"), c("Series_Title","Genre1","Director")]
 ```
 
 Renomeie as variáveis, traduzindo-as para o português.
 
 ```{r echo=TRUE}
-imdb <- 
-rename(imdb,c(título = "Series_Title",
+imdb1000 <- 
+rename(imdb1000,c(título = "Series_Title",
               lançamento = "Released_Year",
               certificado = "Certificate",
               duração = "Runtime",
@@ -643,8 +643,6 @@ rename(imdb,c(título = "Series_Title",
               ator4 = "Star4",
               votos = "No_of_Votes",
               custo = "Gross"))
-
-names(imdb)
 ```
 
 Vamos fazer mais alguns exercícios com um banco de dados sobre a população mundial.
@@ -1176,7 +1174,7 @@ Há vários pacotes para importação de arquivos elaborados em outros programas
 De forma semelhante, às vezes, analisamos os dados no R/RStudio, salvamos a planilha em um dataframe, mas gostaríamos de exportar essa planilha para outros formatos, para serem lidos por outros programas, por exemplo.
 A seguir, veremos como fazer isso, começando pela **exportação de arquivos**.
 
-## Exportação de arquivos \### Usando função da base
+## Exportação de arquivos usando função da base
 
 ```{r}
 
@@ -1552,4 +1550,121 @@ df %>% rename(item1 = v1,
               item3 = v3,
               item4 = v4,
               item5 = v5)
+```
+
+# Exercícios 4
+
+Nos próximos exercícios vamos trabalhar com a base de dados imdb, que apresenta uma série de informações sobre filmes disponibilizados pela Amazon.
+Baixe o dataframe [aqui](ATUALIZAR) e importe-o para dentro do RStudio e use as funções do tidyverse para resolver os próximos exercícios.
+
+```{r eval=FALSE, include=FALSE}
+imdb <- read_csv("imdb.csv")
+glimpse(imdb)
+```
+
+16. Crie uma variável id para todos os sujeitos do dataframe e coloque essa variável na primeira coluna. Não se esqueça de salvar essa transformação no dataframe imdb.
+
+```{r eval=FALSE, include=FALSE}
+imdb$id <- paste("s",1:nrow(imdb),sep = "")
+
+imdb <- imdb %>% select(id,everything())
+```
+
+17. Selecione as variáveis título, duração, cor e gênero dos 1000 primeiros casos do banco de dados. Não precisa salvar.
+
+```{r eval=FALSE, include=FALSE}
+imdb %>% select(titulo,duracao,cor,generos) %>% slice(1:1000)
+```
+
+18. Monte um dataframe somente com os filmes do diretor Clint Eastwood. Salve-o como imdb_clint.
+
+```{r eval=FALSE, include=FALSE}
+imdb_clint <- imdb %>% filter(diretor == "Clint Eastwood")
+```
+
+19. Reorganize o dataframe com filmes do diretor Clint Eastwood por ordem decrescente de receita e visualise os dados para ver se funcionou. Salve o dataframe com o mesmo nome.
+
+```{r eval=FALSE, include=FALSE}
+imdb_clint <- imdb_clint %>% arrange(desc(receita))
+imdb_clint
+```
+
+20. Selecione uma amostra aleatória do dataframe imdb com 45% dos filmes relacionados. Não precisa salvar.
+
+```{r eval=FALSE, include=FALSE}
+imdb %>% slice_sample(prop = .45)
+```
+
+21. Calcule as médias de orçamento e de receita, por diretor. Salve o resultado num objeto chamado imdb_lucro. Obs.: Nos resultados vão aparecer sinais como NA ou NaN, porque há informações não disponíveis que acabam não permitindo os cálculos desejados.
+
+```{r eval=FALSE, include=FALSE}
+view(imdb)
+
+imdb %>% filter(diretor == "James Cameron" | diretor == "Steven Spielberg" | diretor == "Francis Ford Coppola" | diretor == "Tim Burton") %>% group_by(diretor) %>% summarise(imdb = mean(nota_imdb, na.rm = TRUE))
+imdb_lucro <- imdb %>% group_by(diretor) %>% summarise(Orçamento_médio = mean(orcamento, na.rm = TRUE), Receita_média = mean(receita, na.rm = TRUE))
+```
+
+22. No dataframe anterior, crie a variável lucro, a partir das médias de orçamento e receita. Identifique o diretor mais lucrativo e o que dá mais prejuízo.
+
+```{r eval=FALSE, include=FALSE}
+# o mais lucrativo
+imdb_lucro %>% mutate(lucro = Receita_média - Orçamento_médio) %>% arrange(desc(lucro))
+
+# o que dá mais prejuízo
+imdb_lucro %>% mutate(lucro = Receita_média - Orçamento_médio) %>% arrange(lucro)
+
+# identificação, por curiosidade, do lucro obtido por James Cameron
+imdb_lucro %>% mutate(lucro = Receita_média - Orçamento_médio) %>% arrange(lucro) %>% filter(diretor == "James Cameron")
+
+# Para identificar a posição de um diretor em termos de lucratividade
+imdb_lucro$posição <- paste(1:nrow(imdb_lucro),sep = "")
+
+imdb_lucro %>% filter(diretor == "Daniel Myrick")
+```
+
+23. Voltando ao dataframe completo (imdb). Obtenha um dataframe que contenha somente os diretores que tiverem 3 filmes ou mais no catálogo.
+
+Dica1: A informação de quantos filmes cada diretor tem, não está diretamente disponível no dataframe.
+O que a gente tem é uma linha por filme.
+Então, o mesmo diretor pode constar em várias linhas, correspondentes aos filmes que ele dirigiu.
+
+Dica2: nesse caso, temos que usar o operador `%in%` ao invés de `==` porque `%in%` permite comparar objetos de tamanhos diferentes, enquanto o `==` só permite comparar objetos de tamanhos iguais, ou uma coluna com UMA informação.
+Veja o exemplo com o dataframe big_five
+
+```{r eval=FALSE, include=FALSE}
+# no dataframe big_five, se quisermos filtrar os participantes estadunidenses, podemos usar o filter. 
+big_five %>% filter(país == "US") %>% glimpse()
+
+# porém, se quisermos filtrar os países com mais de 100 participantes, podemos fazer o seguinte:
+# pegue o dataframe big_five; ENTÃO, conte a frequência dos países; ENTÃO, filtre os países cujo n for maior que 100. Guarde essa tabela num objeto chamado pais.
+pais <- big_five %>% count(país) %>% filter(n>=100)
+
+# guardar somente a coluna com o nome dos países selecionados.
+lista_país <- pais$país
+
+# com isso obtemos uma lista dos países (lista_país) que contêm mais de 100 participantes. Agora, queremos selecionar em big_five$país somente aqueles que forem iguais a um dos países constantes na lista_país. Para isso temos que usar o código %in% ao invés de == 
+
+big_five %>% filter(país %in% lista_país) %>% glimpse()
+
+# se rodarmos com == no lugar de %in% vai dar erro porque o comprimento da lista não é igual ao comprimento do dataframe big_five.
+
+#big_five %>% filter(país == lista_país) 
+
+```
+
+```{r eval=FALSE, include=FALSE}
+# contar a ocorrência de diretores e filtrar os que aparecem 3x ou mais.
+imdb_diretores_3mais <- imdb %>% count(diretor) %>% filter(n>=3) %>% arrange(n)
+
+# retirar somente o vetor "diretores" do objeto imdb_diretores_3mais 
+vetor_diretores <- imdb_diretores_3mais$diretor
+
+# filtrar imdb caso o que estiver em diretor seja igual a um dos diretores constantes no vetor_diretores. 
+imdb_sub1 <- imdb %>% filter(diretor %in% vetor_diretores)
+```
+
+24. Entre os diretores com 3 filmes ou mais, qual tem maior média de nota_imdb?
+
+```{r eval=FALSE, include=FALSE}
+imdb_sub1 %>% group_by(diretor) %>% summarise(média_imdb = mean(nota_imdb)) %>% arrange(desc(média_imdb))
 ```

@@ -11,7 +11,7 @@
 
 <meta name="author" content="Maurício Bueno" />
 
-<meta name="date" content="2022-09-17" />
+<meta name="date" content="2022-09-18" />
 
 <title>Introdução ao R</title>
 
@@ -1330,7 +1330,6 @@ if (window.hljs) {
 
 
 
-
 <style type="text/css">
 .main-container {
   max-width: 940px;
@@ -1351,9 +1350,6 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
-}
-details > summary > p:only-child {
-  display: inline;
 }
 pre code {
   padding: 0;
@@ -1518,7 +1514,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Introdução ao R</h1>
 <h4 class="author">Maurício Bueno</h4>
-<h4 class="date">2022-09-17</h4>
+<h4 class="date">2022-09-18</h4>
 
 </div>
 
@@ -1586,7 +1582,7 @@ pacotes que iremos utilizar durante o curso.</p>
 # 
 # if(!require(tibble)) install.packages(&quot;tibble&quot;)
 # Ativacao dos pacotes ====
-
+library(readr)
 library(readxl)
 library(tidyverse)
 library(knitr)
@@ -2304,31 +2300,31 @@ df &lt;- df[ ,c(&quot;id&quot;,&quot;sexo&quot;,&quot;idade&quot;,&quot;escolari
 <h1>Exercícios 2</h1>
 <pre class="r"><code># Gerando um arquivo imdb em rds para os alunos
 
-imdb &lt;- read.csv(&quot;imdb_top_1000.csv&quot;,encoding = &quot;UTF-8&quot;)
+imdb1000 &lt;- read.csv(&quot;imdb_top_1000.csv&quot;,encoding = &quot;UTF-8&quot;)
 
 # Codigo abaixo para limpar variáveis de texto
-# imdb &lt;- imdb[,-c(1,8)]
+# imdb1000 &lt;- imdb1000[,-c(1,8)]
 
 # Separar a variável gênero em três variáveis (Genre1, Genre2 e Genre3)
-imdb &lt;- imdb %&gt;% separate(Genre, sep = &quot;,&quot;, into = c(&quot;Genre1&quot;,&quot;Genre2&quot;,&quot;Genre3&quot;))
+imdb1000 &lt;- imdb1000 %&gt;% separate(Genre, sep = &quot;,&quot;, into = c(&quot;Genre1&quot;,&quot;Genre2&quot;,&quot;Genre3&quot;))
 
-saveRDS(imdb,&quot;imdb.rds&quot;)</code></pre>
+saveRDS(imdb1000,&quot;imdb1000.rds&quot;)</code></pre>
 <p>O <em>Internet Movie Database</em>, conhecido popularmente como IMDb,
 é uma base de dados de informação sobre cinema TV, música e games
 pertencente à Amazon. Vamos trabalhar com um arquivo que apresenta
 diversas informações de 1000 filmes. Para isso, temos que seguir dois
 passos: 1) salvar o arquivo em nosso computador e 2) importar o arquivo
 para dentro do R. Então vamos lá…</p>
-<p>Baixe o arquivo <a href="https://github.com/jmhbueno/IntroR_aula/blob/084bf8fa35d9b9a589b3808e3f49112a0705a655/imdb.rds">imdb.rds</a>
-e <strong>salve-o na pasta que você está utilizando para as aulas do
+<p>Baixe o arquivo <a href="ATUALIZAR%20ENDEREÇO">imdb1000.rds</a> e
+<strong>salve-o na pasta que você está utilizando para as aulas do
 R</strong>.</p>
 <p>Agora é necessário importar o arquivo <code>imdb.rds</code> para
 dentro do R, salvando-o como imdb. Para isso, use o código de importação
 abaixo:</p>
-<pre class="r"><code>imdb &lt;- readRDS(&quot;imdb.rds&quot;)
+<pre class="r"><code>imdb1000 &lt;- readRDS(&quot;imdb1000.rds&quot;)
 # OBS: Esse código só irá funcionar se o arquivo estiver salvo na pasta em que vc está trabalhando.</code></pre>
 <p>Quantas linhas e colunas tem o dataframe imdb?</p>
-<pre class="r"><code>str(imdb)</code></pre>
+<pre class="r"><code>str(imdb1000)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    1000 obs. of  18 variables:
 ##  $ Poster_Link  : chr  &quot;https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk&quot;| __truncated__ &quot;https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ&quot;| __truncated__ &quot;https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_UX67_CR0,0,67,98_AL_.jpg&quot; &quot;https://m.media-amazon.com/images/M/MV5BMWMwMGQzZTItY2JlNC00OWZiLWIyMDctNDk2ZDQ2YjRjMWQ0XkEyXkFqcGdeQXVyNzkwMjQ&quot;| __truncated__ ...
 ##  $ Series_Title : chr  &quot;The Shawshank Redemption&quot; &quot;The Godfather&quot; &quot;The Dark Knight&quot; &quot;The Godfather: Part II&quot; ...
@@ -2348,13 +2344,13 @@ abaixo:</p>
 ##  $ Star4        : chr  &quot;William Sadler&quot; &quot;Diane Keaton&quot; &quot;Michael Caine&quot; &quot;Diane Keaton&quot; ...
 ##  $ No_of_Votes  : int  2343110 1620367 2303232 1129952 689845 1642758 1826188 1213505 2067042 1854740 ...
 ##  $ Gross        : chr  &quot;28,341,469&quot; &quot;134,966,411&quot; &quot;534,858,444&quot; &quot;57,300,000&quot; ...</code></pre>
-<pre class="r"><code>nrow(imdb)</code></pre>
+<pre class="r"><code>nrow(imdb1000)</code></pre>
 <pre><code>## [1] 1000</code></pre>
-<pre class="r"><code>ncol(imdb)</code></pre>
+<pre class="r"><code>ncol(imdb1000)</code></pre>
 <pre><code>## [1] 18</code></pre>
 <p>Mostre os filmes desse banco de dados foram dirigidos por Woody
 Allen?</p>
-<pre class="r"><code>imdb[imdb$Director == &quot;Woody Allen&quot;,c(&quot;Series_Title&quot;,&quot;Director&quot;)]</code></pre>
+<pre class="r"><code>imdb1000[imdb1000$Director == &quot;Woody Allen&quot;,c(&quot;Series_Title&quot;,&quot;Director&quot;)]</code></pre>
 <pre><code>##                 Series_Title    Director
 ## 415               Annie Hall Woody Allen
 ## 527  Crimes and Misdemeanors Woody Allen
@@ -2367,7 +2363,7 @@ Allen?</p>
 ## 930              Match Point Woody Allen</code></pre>
 <p>Exiba um dataframe que mostra os títulos dos filmes dirigidos por
 Steven Spielberg que foram lançados até o ano 2000?</p>
-<pre class="r"><code>imdb[imdb$Director == &quot;Steven Spielberg&quot; &amp; imdb$Released_Year &lt;= 2000,
+<pre class="r"><code>imdb1000[imdb1000$Director == &quot;Steven Spielberg&quot; &amp; imdb1000$Released_Year &lt;= 2000,
      c(&quot;Released_Year&quot;,&quot;Director&quot;,&quot;Series_Title&quot;)]</code></pre>
 <pre><code>##     Released_Year         Director                       Series_Title
 ## 8            1993 Steven Spielberg                   Schindler&#39;s List
@@ -2383,7 +2379,7 @@ Steven Spielberg que foram lançados até o ano 2000?</p>
 <p>Exiba um dataframe que mostre os titulos dos filmes dirigidos por
 Steven Spielberg ou James Cameron, que são do gênero drama ou ação
 <strong>(Somente em Genre1)</strong>.</p>
-<pre class="r"><code>imdb[(imdb$Director == &quot;James Cameron&quot; | imdb$Director == &quot;Steven Spielberg&quot;) &amp; (imdb$Genre1 == &quot;Drama&quot; | imdb$Genre1 == &quot;Action&quot;), c(&quot;Series_Title&quot;,&quot;Genre1&quot;,&quot;Director&quot;)]</code></pre>
+<pre class="r"><code>imdb1000[(imdb1000$Director == &quot;James Cameron&quot; | imdb1000$Director == &quot;Steven Spielberg&quot;) &amp; (imdb1000$Genre1 == &quot;Drama&quot; | imdb1000$Genre1 == &quot;Action&quot;), c(&quot;Series_Title&quot;,&quot;Genre1&quot;,&quot;Director&quot;)]</code></pre>
 <pre><code>##                           Series_Title Genre1         Director
 ## 25                 Saving Private Ryan  Drama Steven Spielberg
 ## 45          Terminator 2: Judgment Day Action    James Cameron
@@ -2400,8 +2396,8 @@ Steven Spielberg ou James Cameron, que são do gênero drama ou ação
 ## 952                    Minority Report Action Steven Spielberg
 ## 989 Close Encounters of the Third Kind  Drama Steven Spielberg</code></pre>
 <p>Renomeie as variáveis, traduzindo-as para o português.</p>
-<pre class="r"><code>imdb &lt;- 
-rename(imdb,c(título = &quot;Series_Title&quot;,
+<pre class="r"><code>imdb1000 &lt;- 
+rename(imdb1000,c(título = &quot;Series_Title&quot;,
               lançamento = &quot;Released_Year&quot;,
               certificado = &quot;Certificate&quot;,
               duração = &quot;Runtime&quot;,
@@ -2416,13 +2412,7 @@ rename(imdb,c(título = &quot;Series_Title&quot;,
               ator3 = &quot;Star3&quot;,
               ator4 = &quot;Star4&quot;,
               votos = &quot;No_of_Votes&quot;,
-              custo = &quot;Gross&quot;))
-
-names(imdb)</code></pre>
-<pre><code>##  [1] &quot;Poster_Link&quot; &quot;título&quot;      &quot;lançamento&quot;  &quot;certificado&quot; &quot;duração&quot;    
-##  [6] &quot;gênero1&quot;     &quot;gênero2&quot;     &quot;gênero3&quot;     &quot;imdb&quot;        &quot;Overview&quot;   
-## [11] &quot;meta_escore&quot; &quot;diretor&quot;     &quot;ator1&quot;       &quot;ator2&quot;       &quot;ator3&quot;      
-## [16] &quot;ator4&quot;       &quot;votos&quot;       &quot;custo&quot;</code></pre>
+              custo = &quot;Gross&quot;))</code></pre>
 <p>Vamos fazer mais alguns exercícios com um banco de dados sobre a
 população mundial. Salve o arquivo <a href="https://1drv.ms/u/s!ApvtT9NG4aYok61vBm-Wnr5PWATIWA?e=Skesjw">world_populations.csv</a>
 no diretório que você está utilizando para esta disciplina. Em seguida,
@@ -6449,7 +6439,7 @@ de exportar essa planilha para outros formatos, para serem lidos por
 outros programas, por exemplo. A seguir, veremos como fazer isso,
 começando pela <strong>exportação de arquivos</strong>.</p>
 <div id="exportação-de-arquivos-usando-função-da-base" class="section level2">
-<h2>Exportação de arquivos ### Usando função da base</h2>
+<h2>Exportação de arquivos usando função da base</h2>
 <pre class="r"><code>saveRDS(df,&quot;df.rds&quot;) # formato reconhecido pelo R</code></pre>
 <div id="usando-funções-do-pacote-utils" class="section level3">
 <h3>Usando funções do pacote utils</h3>
@@ -7008,7 +6998,7 @@ df %&gt;% filter(escolaridade == &quot;fundamental&quot;, escolaridade == &quot;
 <pre><code>##  [1] id           sexo         idade        escolaridade estado_civil
 ##  [6] renda        bonus        renda_total  v1           v2          
 ## [11] v3           v4           v5          
-## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
+## &lt;0 linhas&gt; (ou row.names de comprimento 0)</code></pre>
 <pre class="r"><code># Esse comando acima NÃO FUNCIONA porque estamos tentando selecionar duas condições dentro da mesma variável. Aí, nesse caso precisamos combinar a função filter com o operador %in%
 
 df %&gt;% filter(escolaridade %in% c(&quot;fundamental&quot;, &quot;médio&quot;)) # FUNCIONA</code></pre>
@@ -7101,20 +7091,20 @@ df %&gt;% slice(-1)</code></pre>
 <pre class="r"><code># sortear uma proporção do banco de dados
 df %&gt;% slice_sample(prop = .35)</code></pre>
 <pre><code>##   id      sexo idade escolaridade estado_civil renda bonus renda_total v1 v2 v3
-## 1 s2  feminino    32        médio   solteiro/a  1500   500        2000  4  1  3
-## 2 s3 masculino    78  fundamental      viúvo/a  2000   500        2500  3  3  4
+## 1 s3 masculino    78  fundamental      viúvo/a  2000   500        2500  3  3  4
+## 2 s4 masculino    12  fundamental   solteiro/a  2500   500        3000  5  1  2
 ##   v4 v5
-## 1  5  2
-## 2  3  4</code></pre>
+## 1  3  4
+## 2  4  1</code></pre>
 <pre class="r"><code>df %&gt;% slice_sample(n=3)</code></pre>
 <pre><code>##   id      sexo idade escolaridade estado_civil renda bonus renda_total v1 v2 v3
-## 1 s1 masculino    25     superior     casado/a  1000   500        1500  2  2  5
-## 2 s5  feminino    NA        médio     casado/a  3000   500        3500  1  4  4
-## 3 s2  feminino    32        médio   solteiro/a  1500   500        2000  4  1  3
+## 1 s3 masculino    78  fundamental      viúvo/a  2000   500        2500  3  3  4
+## 2 s2  feminino    32        médio   solteiro/a  1500   500        2000  4  1  3
+## 3 s6 masculino    34     superior     casado/a  3500   500        4000  2  5  3
 ##   v4 v5
-## 1  1  3
-## 2  2  5
-## 3  5  2</code></pre>
+## 1  3  4
+## 2  5  2
+## 3  5  3</code></pre>
 </div>
 <div id="arrange" class="section level3">
 <h3>arrange()</h3>
@@ -7269,6 +7259,51 @@ dyplr.</p>
 ## 6     5     3     5     3     18</code></pre>
 </div>
 </div>
+</div>
+<div id="exercícios-4" class="section level1">
+<h1>Exercícios 4</h1>
+<p>Nos próximos exercícios vamos trabalhar com a base de dados imdb, que
+apresenta uma série de informações sobre filmes disponibilizados pela
+Amazon. Baixe o dataframe <a href="ATUALIZAR">aqui</a> e importe-o para
+dentro do RStudio e use as funções do tidyverse para resolver os
+próximos exercícios.</p>
+<ol start="16" style="list-style-type: decimal">
+<li><p>Crie uma variável id para todos os sujeitos do dataframe e
+coloque essa variável na primeira coluna. Não se esqueça de salvar essa
+transformação no dataframe imdb.</p></li>
+<li><p>Selecione as variáveis título, duração, cor e gênero dos 1000
+primeiros casos do banco de dados. Não precisa salvar.</p></li>
+<li><p>Monte um dataframe somente com os filmes do diretor Clint
+Eastwood. Salve-o como imdb_clint.</p></li>
+<li><p>Reorganize o dataframe com filmes do diretor Clint Eastwood por
+ordem decrescente de receita e visualise os dados para ver se funcionou.
+Salve o dataframe com o mesmo nome.</p></li>
+<li><p>Selecione uma amostra aleatória do dataframe imdb com 45% dos
+filmes relacionados. Não precisa salvar.</p></li>
+<li><p>Calcule as médias de orçamento e de receita, por diretor. Salve o
+resultado num objeto chamado imdb_lucro. Obs.: Nos resultados vão
+aparecer sinais como NA ou NaN, porque há informações não disponíveis
+que acabam não permitindo os cálculos desejados.</p></li>
+<li><p>No dataframe anterior, crie a variável lucro, a partir das médias
+de orçamento e receita. Identifique o diretor mais lucrativo e o que dá
+mais prejuízo.</p></li>
+<li><p>Voltando ao dataframe completo (imdb). Obtenha um dataframe que
+contenha somente os diretores que tiverem 3 filmes ou mais no
+catálogo.</p></li>
+</ol>
+<p>Dica1: A informação de quantos filmes cada diretor tem, não está
+diretamente disponível no dataframe. O que a gente tem é uma linha por
+filme. Então, o mesmo diretor pode constar em várias linhas,
+correspondentes aos filmes que ele dirigiu.</p>
+<p>Dica2: nesse caso, temos que usar o operador <code>%in%</code> ao
+invés de <code>==</code> porque <code>%in%</code> permite comparar
+objetos de tamanhos diferentes, enquanto o <code>==</code> só permite
+comparar objetos de tamanhos iguais, ou uma coluna com UMA informação.
+Veja o exemplo com o dataframe big_five</p>
+<ol start="24" style="list-style-type: decimal">
+<li>Entre os diretores com 3 filmes ou mais, qual tem maior média de
+nota_imdb?</li>
+</ol>
 </div>
 
 
