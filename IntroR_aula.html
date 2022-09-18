@@ -2298,25 +2298,14 @@ df &lt;- df[ ,c(&quot;id&quot;,&quot;sexo&quot;,&quot;idade&quot;,&quot;escolari
 </div>
 <div id="exercícios-2" class="section level1">
 <h1>Exercícios 2</h1>
-<pre class="r"><code># Gerando um arquivo imdb em rds para os alunos
-
-imdb1000 &lt;- read.csv(&quot;imdb_top_1000.csv&quot;,encoding = &quot;UTF-8&quot;)
-
-# Codigo abaixo para limpar variáveis de texto
-# imdb1000 &lt;- imdb1000[,-c(1,8)]
-
-# Separar a variável gênero em três variáveis (Genre1, Genre2 e Genre3)
-imdb1000 &lt;- imdb1000 %&gt;% separate(Genre, sep = &quot;,&quot;, into = c(&quot;Genre1&quot;,&quot;Genre2&quot;,&quot;Genre3&quot;))
-
-saveRDS(imdb1000,&quot;imdb1000.rds&quot;)</code></pre>
 <p>O <em>Internet Movie Database</em>, conhecido popularmente como IMDb,
 é uma base de dados de informação sobre cinema TV, música e games
 pertencente à Amazon. Vamos trabalhar com um arquivo que apresenta
 diversas informações de 1000 filmes. Para isso, temos que seguir dois
 passos: 1) salvar o arquivo em nosso computador e 2) importar o arquivo
 para dentro do R. Então vamos lá…</p>
-<p>Baixe o arquivo <a href="ATUALIZAR%20ENDEREÇO">imdb1000.rds</a> e
-<strong>salve-o na pasta que você está utilizando para as aulas do
+<p>Baixe o arquivo <a href="https://github.com/jmhbueno/IntroR_aula/blob/09435ea3036667d756bbc7aef4cd4a6ebdfa4b39/imdb1000.rds">imdb1000.rds</a>
+e <strong>salve-o na pasta que você está utilizando para as aulas do
 R</strong>.</p>
 <p>Agora é necessário importar o arquivo <code>imdb.rds</code> para
 dentro do R, salvando-o como imdb. Para isso, use o código de importação
@@ -7091,20 +7080,20 @@ df %&gt;% slice(-1)</code></pre>
 <pre class="r"><code># sortear uma proporção do banco de dados
 df %&gt;% slice_sample(prop = .35)</code></pre>
 <pre><code>##   id      sexo idade escolaridade estado_civil renda bonus renda_total v1 v2 v3
-## 1 s3 masculino    78  fundamental      viúvo/a  2000   500        2500  3  3  4
-## 2 s4 masculino    12  fundamental   solteiro/a  2500   500        3000  5  1  2
+## 1 s5  feminino    NA        médio     casado/a  3000   500        3500  1  4  4
+## 2 s6 masculino    34     superior     casado/a  3500   500        4000  2  5  3
 ##   v4 v5
-## 1  3  4
-## 2  4  1</code></pre>
+## 1  2  5
+## 2  5  3</code></pre>
 <pre class="r"><code>df %&gt;% slice_sample(n=3)</code></pre>
 <pre><code>##   id      sexo idade escolaridade estado_civil renda bonus renda_total v1 v2 v3
-## 1 s3 masculino    78  fundamental      viúvo/a  2000   500        2500  3  3  4
-## 2 s2  feminino    32        médio   solteiro/a  1500   500        2000  4  1  3
-## 3 s6 masculino    34     superior     casado/a  3500   500        4000  2  5  3
+## 1 s4 masculino    12  fundamental   solteiro/a  2500   500        3000  5  1  2
+## 2 s6 masculino    34     superior     casado/a  3500   500        4000  2  5  3
+## 3 s2  feminino    32        médio   solteiro/a  1500   500        2000  4  1  3
 ##   v4 v5
-## 1  3  4
-## 2  5  2
-## 3  5  3</code></pre>
+## 1  4  1
+## 2  5  3
+## 3  5  2</code></pre>
 </div>
 <div id="arrange" class="section level3">
 <h3>arrange()</h3>
@@ -7267,7 +7256,7 @@ apresenta uma série de informações sobre filmes disponibilizados pela
 Amazon. Baixe o dataframe <a href="ATUALIZAR">aqui</a> e importe-o para
 dentro do RStudio e use as funções do tidyverse para resolver os
 próximos exercícios.</p>
-<ol start="16" style="list-style-type: decimal">
+<ol style="list-style-type: decimal">
 <li><p>Crie uma variável id para todos os sujeitos do dataframe e
 coloque essa variável na primeira coluna. Não se esqueça de salvar essa
 transformação no dataframe imdb.</p></li>
@@ -7300,7 +7289,144 @@ invés de <code>==</code> porque <code>%in%</code> permite comparar
 objetos de tamanhos diferentes, enquanto o <code>==</code> só permite
 comparar objetos de tamanhos iguais, ou uma coluna com UMA informação.
 Veja o exemplo com o dataframe big_five</p>
-<ol start="24" style="list-style-type: decimal">
+<pre class="r"><code># no dataframe big_five, se quisermos filtrar os participantes estadunidenses, podemos usar o filter. 
+big_five %&gt;% filter(país == &quot;US&quot;) %&gt;% glimpse()</code></pre>
+<pre><code>## Rows: 8,753
+## Columns: 59
+## $ id           &lt;chr&gt; &quot;s1&quot;, &quot;s2&quot;, &quot;s5&quot;, &quot;s6&quot;, &quot;s7&quot;, &quot;s9&quot;, &quot;s10&quot;, &quot;s13&quot;, &quot;s14&quot;, ~
+## $ raça         &lt;fct&gt; &quot;Caucasiano (Europeu)&quot;, &quot;Outro&quot;, &quot;Sudeste Asiático (Chinê~
+## $ idade        &lt;dbl&gt; 53, 46, 25, 31, 20, 39, 18, 22, 21, 28, 21, 21, 26, 29, 2~
+## $ ing_nat      &lt;fct&gt; Sim, Sim, Não, Sim, Sim, Sim, Sim, Sim, Sim, Não, Sim, Si~
+## $ gênero       &lt;fct&gt; Masculino, Feminino, Feminino, Feminino, Feminino, Femini~
+## $ mão_dom      &lt;fct&gt; Direita, Direita, Direita, Direita, Direita, Ambas, Direi~
+## $ fonte        &lt;dbl&gt; 1, 1, 2, 2, 5, 4, 5, 2, 5, 2, 5, 5, 1, 1, 2, 1, 2, 4, 1, ~
+## $ país         &lt;fct&gt; US, US, US, US, US, US, US, US, US, US, US, US, US, US, U~
+## $ E1           &lt;dbl&gt; 4, 2, 3, 1, 5, 3, 1, 3, 1, 3, 2, 4, 2, 2, 2, 3, 5, 3, 2, ~
+## $ E2           &lt;dbl&gt; 4, 4, 5, 1, 5, 5, 2, 3, 3, 3, 3, 5, 4, 3, 3, 2, 1, 3, 2, ~
+## $ E3           &lt;dbl&gt; 5, 3, 3, 2, 5, 5, 2, 4, 2, 3, 2, 5, 3, 4, 1, 4, 4, 4, 3, ~
+## $ E4           &lt;dbl&gt; 4, 3, 3, 2, 5, 5, 1, 4, 1, 2, 3, 4, 3, 4, 2, 2, 5, 3, 2, ~
+## $ E5           &lt;dbl&gt; 5, 3, 3, 1, 5, 5, 2, 4, 1, 3, 3, 5, 3, 4, 2, 2, 5, 2, 2, ~
+## $ E6           &lt;dbl&gt; 5, 3, 5, 3, 5, 5, 2, 4, 5, 4, 5, 5, 3, 5, 2, 3, 5, 4, 4, ~
+## $ E7           &lt;dbl&gt; 4, 1, 3, 2, 5, 5, 1, 2, 1, 2, 1, 5, 1, 3, 1, 3, 5, 3, 4, ~
+## $ E8           &lt;dbl&gt; 3, 1, 5, 2, 2, 4, 2, 3, 1, 2, 3, 3, 3, 2, 3, 3, 5, 2, 1, ~
+## $ E9           &lt;dbl&gt; 5, 1, 3, 1, 4, 5, 1, 4, 1, 3, 4, 5, 3, 2, 3, 4, 5, 2, 1, ~
+## $ E10          &lt;dbl&gt; 5, 1, 1, 1, 5, 3, 1, 3, 1, 1, 2, 5, 3, 3, 2, 1, 4, 2, 1, ~
+## $ N1           &lt;dbl&gt; 1, 2, 3, 1, 2, 2, 5, 3, 5, 2, 2, 5, 4, 1, 3, 4, 3, 4, 5, ~
+## $ N2           &lt;dbl&gt; 1, 3, 3, 1, 2, 2, 4, 3, 3, 2, 2, 4, 2, 4, 3, 2, 2, 3, 2, ~
+## $ N3           &lt;dbl&gt; 2, 4, 3, 4, 2, 5, 5, 3, 5, 4, 2, 5, 3, 2, 5, 4, 4, 4, 5, ~
+## $ N4           &lt;dbl&gt; 1, 4, 2, 1, 2, 3, 4, 3, 4, 2, 2, 4, 5, 3, 4, 3, 1, 3, 5, ~
+## $ N5           &lt;dbl&gt; 1, 3, 3, 1, 2, 3, 3, 2, 5, 4, 1, 3, 3, 2, 3, 2, 3, 2, 3, ~
+## $ N6           &lt;dbl&gt; 1, 4, 3, 4, 2, 5, 4, 2, 5, 4, 2, 3, 2, 1, 3, 2, 3, 2, 4, ~
+## $ N7           &lt;dbl&gt; 1, 3, 3, 4, 3, 5, 3, 4, 3, 2, 2, 3, 2, 2, 4, 3, 4, 3, 5, ~
+## $ N8           &lt;dbl&gt; 1, 2, 3, 1, 2, 4, 2, 4, 2, 2, 2, 3, 2, 1, 3, 2, 3, 3, 4, ~
+## $ N9           &lt;dbl&gt; 1, 2, 3, 5, 2, 3, 3, 2, 5, 3, 2, 4, 4, 2, 3, 1, 3, 2, 4, ~
+## $ N10          &lt;dbl&gt; 1, 4, 4, 2, 2, 3, 4, 3, 3, 2, 2, 2, 4, 2, 3, 3, 2, 2, 4, ~
+## $ A1           &lt;dbl&gt; 5, 5, 1, 4, 1, 5, 4, 5, 5, 5, 2, 5, 5, 4, 5, 5, 2, 5, 3, ~
+## $ A2           &lt;dbl&gt; 5, 3, 5, 2, 5, 5, 3, 4, 1, 4, 2, 5, 3, 4, 4, 4, 5, 2, 5, ~
+## $ A3           &lt;dbl&gt; 5, 3, 3, 3, 5, 5, 5, 5, 5, 4, 2, 4, 4, 3, 5, 5, 2, 5, 1, ~
+## $ A4           &lt;dbl&gt; 5, 4, 5, 4, 5, 5, 4, 5, 4, 4, 2, 5, 4, 3, 4, 5, 4, 3, 4, ~
+## $ A5           &lt;dbl&gt; 4, 2, 5, 3, 5, 5, 4, 5, 4, 4, 1, 4, 3, 5, 4, 3, 2, 4, 5, ~
+## $ A6           &lt;dbl&gt; 3, 4, 5, 4, 5, 5, 4, 5, 3, 4, 2, 5, 2, 2, 4, 3, 4, 4, 5, ~
+## $ A7           &lt;dbl&gt; 5, 4, 5, 3, 5, 5, 3, 4, 1, 4, 1, 5, 3, 4, 3, 3, 5, 4, 5, ~
+## $ A8           &lt;dbl&gt; 5, 3, 5, 5, 5, 5, 3, 4, 4, 4, 2, 5, 3, 4, 5, 3, 2, 4, 4, ~
+## $ A9           &lt;dbl&gt; 4, 4, 5, 5, 4, 5, 3, 5, 4, 3, 1, 5, 4, 2, 4, 4, 4, 4, 2, ~
+## $ A10          &lt;dbl&gt; 5, 3, 5, 3, 5, 4, 2, 4, 2, 4, 2, 3, 4, 3, 3, 4, 5, 3, 3, ~
+## $ C1           &lt;dbl&gt; 4, 4, 3, 2, 2, 4, 5, 4, 5, 4, 4, 3, 1, 4, 4, 3, 2, 3, 2, ~
+## $ C2           &lt;dbl&gt; 5, 5, 5, 1, 2, 3, 4, 4, 4, 4, 4, 2, 4, 3, 4, 1, 1, 3, 1, ~
+## $ C3           &lt;dbl&gt; 5, 3, 5, 4, 3, 5, 4, 4, 5, 4, 4, 3, 5, 5, 4, 4, 2, 3, 3, ~
+## $ C4           &lt;dbl&gt; 5, 4, 3, 3, 3, 4, 4, 4, 5, 4, 5, 3, 4, 5, 4, 3, 1, 3, 2, ~
+## $ C5           &lt;dbl&gt; 5, 3, 3, 3, 3, 5, 3, 3, 3, 4, 3, 1, 2, 4, 4, 1, 1, 4, 1, ~
+## $ C6           &lt;dbl&gt; 5, 5, 5, 2, 3, 4, 4, 2, 4, 4, 4, 5, 5, 4, 5, 1, 1, 3, 4, ~
+## $ C7           &lt;dbl&gt; 4, 5, 1, 5, 3, 5, 4, 4, 5, 4, 4, 3, 4, 4, 5, 4, 3, 3, 2, ~
+## $ C8           &lt;dbl&gt; 5, 5, 3, 3, 3, 4, 4, 5, 4, 4, 5, 3, 4, 5, 4, 2, 3, 3, 1, ~
+## $ C9           &lt;dbl&gt; 4, 4, 3, 5, 3, 4, 4, 5, 4, 4, 4, 4, 2, 3, 4, 2, 5, 3, 3, ~
+## $ C10          &lt;dbl&gt; 5, 4, 3, 3, 3, 3, 4, 4, 4, 4, 5, 3, 2, 4, 4, 4, 5, 2, 1, ~
+## $ O1           &lt;dbl&gt; 4, 3, 3, 4, 3, 3, 4, 3, 3, 3, 4, 3, 4, 5, 4, 4, 4, 2, 4, ~
+## $ O2           &lt;dbl&gt; 5, 3, 5, 4, 5, 3, 4, 4, 5, 4, 5, 5, 4, 5, 4, 3, 5, 3, 3, ~
+## $ O3           &lt;dbl&gt; 3, 3, 1, 1, 5, 5, 5, 4, 3, 4, 5, 3, 5, 4, 5, 4, 5, 4, 3, ~
+## $ O4           &lt;dbl&gt; 5, 3, 5, 3, 5, 3, 4, 4, 3, 3, 5, 3, 4, 5, 3, 2, 5, 3, 5, ~
+## $ O5           &lt;dbl&gt; 5, 2, 3, 3, 4, 5, 4, 3, 4, 4, 5, 3, 2, 4, 4, 4, 5, 3, 4, ~
+## $ O6           &lt;dbl&gt; 5, 3, 5, 1, 5, 5, 5, 4, 5, 4, 5, 3, 5, 5, 4, 4, 5, 4, 4, ~
+## $ O7           &lt;dbl&gt; 4, 3, 3, 5, 4, 5, 4, 3, 4, 4, 4, 5, 5, 5, 3, 4, 4, 3, 3, ~
+## $ O8           &lt;dbl&gt; 2, 1, 1, 4, 3, 3, 3, 3, 3, 2, 4, 4, 3, 4, 4, 4, 4, 2, 3, ~
+## $ O9           &lt;dbl&gt; 5, 3, 5, 5, 3, 4, 4, 5, 5, 4, 5, 3, 4, 4, 5, 5, 2, 4, 5, ~
+## $ O10          &lt;dbl&gt; 5, 2, 3, 3, 4, 5, 4, 4, 4, 4, 5, 3, 4, 4, 3, 4, 5, 3, 5, ~
+## $ faixa_etária &lt;dbl&gt; 5, 4, 2, 3, 1, 3, 1, 2, 2, 2, 2, 2, 2, 2, 2, 5, 4, 2, 1, ~</code></pre>
+<pre class="r"><code># porém, se quisermos filtrar os países com mais de 100 participantes, podemos fazer o seguinte:
+# pegue o dataframe big_five; ENTÃO, conte a frequência dos países; ENTÃO, filtre os países cujo n for maior que 100. Guarde essa tabela num objeto chamado pais.
+pais &lt;- big_five %&gt;% count(país) %&gt;% filter(n&gt;=100)
+
+# guardar somente a coluna com o nome dos países selecionados.
+lista_país &lt;- pais$país
+
+# com isso obtemos uma lista dos países (lista_país) que contêm mais de 100 participantes. Agora, queremos selecionar em big_five$país somente aqueles que forem iguais a um dos países constantes na lista_país. Para isso temos que usar o código %in% ao invés de == 
+
+big_five %&gt;% filter(país %in% lista_país) %&gt;% glimpse()</code></pre>
+<pre><code>## Rows: 17,459
+## Columns: 59
+## $ id           &lt;chr&gt; &quot;s1&quot;, &quot;s2&quot;, &quot;s3&quot;, &quot;s4&quot;, &quot;s5&quot;, &quot;s6&quot;, &quot;s7&quot;, &quot;s8&quot;, &quot;s9&quot;, &quot;s1~
+## $ raça         &lt;fct&gt; &quot;Caucasiano (Europeu)&quot;, &quot;Outro&quot;, &quot;Raça Mista&quot;, &quot;Caucasian~
+## $ idade        &lt;dbl&gt; 53, 46, 14, 19, 25, 31, 20, 23, 39, 18, 17, 15, 22, 21, 2~
+## $ ing_nat      &lt;fct&gt; Sim, Sim, Não, Não, Não, Sim, Sim, Não, Sim, Sim, Não, Nã~
+## $ gênero       &lt;fct&gt; Masculino, Feminino, Feminino, Feminino, Feminino, Femini~
+## $ mão_dom      &lt;fct&gt; Direita, Direita, Direita, Direita, Direita, Direita, Dir~
+## $ fonte        &lt;dbl&gt; 1, 1, 1, 1, 2, 2, 5, 2, 4, 5, 1, 1, 2, 5, 2, 5, 2, 5, 5, ~
+## $ país         &lt;fct&gt; US, US, PK, RO, US, US, US, IN, US, US, IT, IN, US, US, U~
+## $ E1           &lt;dbl&gt; 4, 2, 5, 2, 3, 1, 5, 4, 3, 1, 1, 3, 3, 1, 3, 2, 1, 4, 2, ~
+## $ E2           &lt;dbl&gt; 4, 4, 5, 1, 5, 1, 5, 3, 5, 2, 1, 3, 3, 3, 3, 3, 3, 5, 3, ~
+## $ E3           &lt;dbl&gt; 5, 3, 1, 2, 3, 2, 5, 5, 5, 2, 2, 5, 4, 2, 3, 2, 2, 5, 4, ~
+## $ E4           &lt;dbl&gt; 4, 3, 2, 2, 3, 2, 5, 3, 5, 1, 1, 3, 4, 1, 2, 3, 2, 4, 3, ~
+## $ E5           &lt;dbl&gt; 5, 3, 5, 3, 3, 1, 5, 5, 5, 2, 1, 3, 4, 1, 3, 3, 2, 5, 1, ~
+## $ E6           &lt;dbl&gt; 5, 3, 5, 2, 5, 3, 5, 5, 5, 2, 2, 3, 4, 5, 4, 5, 2, 5, 2, ~
+## $ E7           &lt;dbl&gt; 4, 1, 1, 3, 3, 2, 5, 4, 5, 1, 1, 2, 2, 1, 2, 1, 1, 5, 1, ~
+## $ E8           &lt;dbl&gt; 3, 1, 1, 2, 5, 2, 2, 3, 4, 2, 2, 2, 3, 1, 2, 3, 2, 3, 2, ~
+## $ E9           &lt;dbl&gt; 5, 1, 5, 4, 3, 1, 4, 4, 5, 1, 1, 3, 4, 1, 3, 4, 3, 5, 1, ~
+## $ E10          &lt;dbl&gt; 5, 1, 5, 1, 1, 1, 5, 3, 3, 1, 1, 3, 3, 1, 1, 2, 2, 5, 1, ~
+## $ N1           &lt;dbl&gt; 1, 2, 5, 5, 3, 1, 2, 1, 2, 5, 5, 1, 3, 5, 2, 2, 4, 5, 4, ~
+## $ N2           &lt;dbl&gt; 1, 3, 5, 2, 3, 1, 2, 2, 2, 4, 3, 1, 3, 3, 2, 2, 4, 4, 4, ~
+## $ N3           &lt;dbl&gt; 2, 4, 5, 4, 3, 4, 2, 4, 5, 5, 5, 3, 3, 5, 4, 2, 3, 5, 5, ~
+## $ N4           &lt;dbl&gt; 1, 4, 1, 4, 2, 1, 2, 2, 3, 4, 3, 3, 3, 4, 2, 2, 4, 4, 4, ~
+## $ N5           &lt;dbl&gt; 1, 3, 5, 4, 3, 1, 2, 1, 3, 3, 2, 2, 2, 5, 4, 1, 1, 3, 1, ~
+## $ N6           &lt;dbl&gt; 1, 4, 5, 5, 3, 4, 2, 1, 5, 4, 5, 3, 2, 5, 4, 2, 3, 3, 4, ~
+## $ N7           &lt;dbl&gt; 1, 3, 5, 5, 3, 4, 3, 1, 5, 3, 3, 2, 4, 3, 2, 2, 1, 3, 2, ~
+## $ N8           &lt;dbl&gt; 1, 2, 5, 5, 3, 1, 2, 1, 4, 2, 3, 3, 4, 2, 2, 2, 2, 3, 2, ~
+## $ N9           &lt;dbl&gt; 1, 2, 5, 4, 3, 5, 2, 1, 3, 3, 4, 2, 2, 5, 3, 2, 2, 4, 2, ~
+## $ N10          &lt;dbl&gt; 1, 4, 5, 5, 4, 2, 2, 1, 3, 4, 3, 4, 3, 3, 2, 2, 3, 2, 2, ~
+## $ A1           &lt;dbl&gt; 5, 5, 1, 4, 1, 4, 1, 4, 5, 4, 4, 2, 5, 5, 5, 2, 2, 5, 4, ~
+## $ A2           &lt;dbl&gt; 5, 3, 1, 5, 5, 2, 5, 5, 5, 3, 4, 4, 4, 1, 4, 2, 2, 5, 2, ~
+## $ A3           &lt;dbl&gt; 5, 3, 1, 2, 3, 3, 5, 5, 5, 5, 4, 4, 5, 5, 4, 2, 3, 4, 4, ~
+## $ A4           &lt;dbl&gt; 5, 4, 5, 4, 5, 4, 5, 4, 5, 4, 4, 2, 5, 4, 4, 2, 1, 5, 2, ~
+## $ A5           &lt;dbl&gt; 4, 2, 5, 3, 5, 3, 5, 3, 5, 4, 5, 1, 5, 4, 4, 1, 2, 4, 4, ~
+## $ A6           &lt;dbl&gt; 3, 4, 5, 5, 5, 4, 5, 3, 5, 4, 5, 5, 5, 3, 4, 2, 1, 5, 5, ~
+## $ A7           &lt;dbl&gt; 5, 4, 5, 3, 5, 3, 5, 5, 5, 3, 5, 4, 4, 1, 4, 1, 1, 5, 4, ~
+## $ A8           &lt;dbl&gt; 5, 3, 5, 4, 5, 5, 5, 3, 5, 3, 4, 5, 4, 4, 4, 2, 3, 5, 4, ~
+## $ A9           &lt;dbl&gt; 4, 4, 5, 4, 5, 5, 4, 4, 5, 3, 3, 4, 5, 4, 3, 1, 1, 5, 2, ~
+## $ A10          &lt;dbl&gt; 5, 3, 5, 3, 5, 3, 5, 5, 4, 2, 3, 4, 4, 2, 4, 2, 1, 3, 3, ~
+## $ C1           &lt;dbl&gt; 4, 4, 4, 3, 3, 2, 2, 4, 4, 5, 3, 3, 4, 5, 4, 4, 4, 3, 4, ~
+## $ C2           &lt;dbl&gt; 5, 5, 5, 3, 5, 1, 2, 4, 3, 4, 2, 3, 4, 4, 4, 4, 3, 2, 5, ~
+## $ C3           &lt;dbl&gt; 5, 3, 5, 4, 5, 4, 3, 5, 5, 4, 3, 4, 4, 5, 4, 4, 5, 3, 5, ~
+## $ C4           &lt;dbl&gt; 5, 4, 5, 1, 3, 3, 3, 5, 4, 4, 2, 3, 4, 5, 4, 5, 4, 3, 5, ~
+## $ C5           &lt;dbl&gt; 5, 3, 5, 1, 3, 3, 3, 4, 5, 3, 1, 3, 3, 3, 4, 3, 2, 1, 4, ~
+## $ C6           &lt;dbl&gt; 5, 5, 5, 2, 5, 2, 3, 5, 4, 4, 1, 1, 2, 4, 4, 4, 2, 5, 4, ~
+## $ C7           &lt;dbl&gt; 4, 5, 5, 5, 1, 5, 3, 4, 5, 4, 3, 3, 4, 5, 4, 4, 3, 3, 5, ~
+## $ C8           &lt;dbl&gt; 5, 5, 5, 2, 3, 3, 3, 5, 4, 4, 3, 3, 5, 4, 4, 5, 5, 3, 5, ~
+## $ C9           &lt;dbl&gt; 4, 4, 5, 2, 3, 5, 3, 3, 4, 4, 3, 3, 5, 4, 4, 4, 3, 4, 5, ~
+## $ C10          &lt;dbl&gt; 5, 4, 5, 3, 3, 3, 3, 5, 3, 4, 3, 4, 4, 4, 4, 5, 5, 3, 4, ~
+## $ O1           &lt;dbl&gt; 4, 3, 4, 4, 3, 4, 3, 3, 3, 4, 5, 3, 3, 3, 3, 4, 5, 3, 4, ~
+## $ O2           &lt;dbl&gt; 5, 3, 1, 3, 5, 4, 5, 5, 3, 4, 3, 5, 4, 5, 4, 5, 5, 5, 5, ~
+## $ O3           &lt;dbl&gt; 3, 3, 5, 5, 1, 1, 5, 5, 5, 5, 5, 4, 4, 3, 4, 5, 4, 3, 4, ~
+## $ O4           &lt;dbl&gt; 5, 3, 5, 4, 5, 3, 5, 5, 3, 4, 3, 5, 4, 3, 3, 5, 5, 3, 4, ~
+## $ O5           &lt;dbl&gt; 5, 2, 5, 4, 3, 3, 4, 4, 5, 4, 4, 4, 3, 4, 4, 5, 4, 3, 4, ~
+## $ O6           &lt;dbl&gt; 5, 3, 5, 4, 5, 1, 5, 5, 5, 5, 5, 1, 4, 5, 4, 5, 5, 3, 4, ~
+## $ O7           &lt;dbl&gt; 4, 3, 5, 5, 3, 5, 4, 5, 5, 4, 3, 4, 3, 4, 4, 4, 5, 5, 5, ~
+## $ O8           &lt;dbl&gt; 2, 1, 5, 2, 1, 4, 3, 3, 3, 3, 5, 3, 3, 3, 2, 4, 5, 4, 3, ~
+## $ O9           &lt;dbl&gt; 5, 3, 5, 5, 5, 5, 3, 2, 4, 4, 4, 4, 5, 5, 4, 5, 5, 3, 2, ~
+## $ O10          &lt;dbl&gt; 5, 2, 5, 5, 3, 3, 4, 5, 5, 4, 5, 5, 4, 4, 4, 5, 4, 3, 2, ~
+## $ faixa_etária &lt;dbl&gt; 5, 4, 1, 1, 2, 3, 1, 2, 3, 1, 1, 1, 2, 2, 2, 2, 1, 2, 2, ~</code></pre>
+<pre class="r"><code># se rodarmos com == no lugar de %in% vai dar erro porque o comprimento da lista não é igual ao comprimento do dataframe big_five.
+
+#big_five %&gt;% filter(país == lista_país) </code></pre>
+<ol start="9" style="list-style-type: decimal">
 <li>Entre os diretores com 3 filmes ou mais, qual tem maior média de
 nota_imdb?</li>
 </ol>

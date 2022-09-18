@@ -565,7 +565,7 @@ df <- df[ ,c("id","sexo","idade","escolaridade","estado_civil",
 
 # Exercícios 2
 
-```{r echo=TRUE}
+```{r eval=FALSE, include=FALSE}
 
 # Gerando um arquivo imdb em rds para os alunos
 
@@ -585,7 +585,7 @@ Vamos trabalhar com um arquivo que apresenta diversas informações de 1000 film
 Para isso, temos que seguir dois passos: 1) salvar o arquivo em nosso computador e 2) importar o arquivo para dentro do R.
 Então vamos lá...
 
-Baixe o arquivo [imdb1000.rds](ATUALIZAR ENDEREÇO) e **salve-o na pasta que você está utilizando para as aulas do R**.
+Baixe o arquivo [imdb1000.rds](https://github.com/jmhbueno/IntroR_aula/blob/09435ea3036667d756bbc7aef4cd4a6ebdfa4b39/imdb1000.rds) e **salve-o na pasta que você está utilizando para as aulas do R**.
 
 Agora é necessário importar o arquivo `imdb.rds` para dentro do R, salvando-o como imdb.
 Para isso, use o código de importação abaixo:
@@ -1554,15 +1554,20 @@ df %>% rename(item1 = v1,
 
 # Exercícios 4
 
+```{r eval=FALSE, include=FALSE}
+imdb <- read_csv("imdb.csv")
+saveRDS(imdb,"imdb.rds")
+
+```
+
 Nos próximos exercícios vamos trabalhar com a base de dados imdb, que apresenta uma série de informações sobre filmes disponibilizados pela Amazon.
 Baixe o dataframe [aqui](ATUALIZAR) e importe-o para dentro do RStudio e use as funções do tidyverse para resolver os próximos exercícios.
 
 ```{r eval=FALSE, include=FALSE}
-imdb <- read_csv("imdb.csv")
-glimpse(imdb)
+imdb <- readRDS("imdb.rds")
 ```
 
-16. Crie uma variável id para todos os sujeitos do dataframe e coloque essa variável na primeira coluna. Não se esqueça de salvar essa transformação no dataframe imdb.
+1. Crie uma variável id para todos os sujeitos do dataframe e coloque essa variável na primeira coluna. Não se esqueça de salvar essa transformação no dataframe imdb.
 
 ```{r eval=FALSE, include=FALSE}
 imdb$id <- paste("s",1:nrow(imdb),sep = "")
@@ -1570,32 +1575,32 @@ imdb$id <- paste("s",1:nrow(imdb),sep = "")
 imdb <- imdb %>% select(id,everything())
 ```
 
-17. Selecione as variáveis título, duração, cor e gênero dos 1000 primeiros casos do banco de dados. Não precisa salvar.
+2. Selecione as variáveis título, duração, cor e gênero dos 1000 primeiros casos do banco de dados. Não precisa salvar.
 
 ```{r eval=FALSE, include=FALSE}
 imdb %>% select(titulo,duracao,cor,generos) %>% slice(1:1000)
 ```
 
-18. Monte um dataframe somente com os filmes do diretor Clint Eastwood. Salve-o como imdb_clint.
+3. Monte um dataframe somente com os filmes do diretor Clint Eastwood. Salve-o como imdb_clint.
 
 ```{r eval=FALSE, include=FALSE}
 imdb_clint <- imdb %>% filter(diretor == "Clint Eastwood")
 ```
 
-19. Reorganize o dataframe com filmes do diretor Clint Eastwood por ordem decrescente de receita e visualise os dados para ver se funcionou. Salve o dataframe com o mesmo nome.
+4. Reorganize o dataframe com filmes do diretor Clint Eastwood por ordem decrescente de receita e visualise os dados para ver se funcionou. Salve o dataframe com o mesmo nome.
 
 ```{r eval=FALSE, include=FALSE}
 imdb_clint <- imdb_clint %>% arrange(desc(receita))
 imdb_clint
 ```
 
-20. Selecione uma amostra aleatória do dataframe imdb com 45% dos filmes relacionados. Não precisa salvar.
+5. Selecione uma amostra aleatória do dataframe imdb com 45% dos filmes relacionados. Não precisa salvar.
 
 ```{r eval=FALSE, include=FALSE}
 imdb %>% slice_sample(prop = .45)
 ```
 
-21. Calcule as médias de orçamento e de receita, por diretor. Salve o resultado num objeto chamado imdb_lucro. Obs.: Nos resultados vão aparecer sinais como NA ou NaN, porque há informações não disponíveis que acabam não permitindo os cálculos desejados.
+6. Calcule as médias de orçamento e de receita, por diretor. Salve o resultado num objeto chamado imdb_lucro. Obs.: Nos resultados vão aparecer sinais como NA ou NaN, porque há informações não disponíveis que acabam não permitindo os cálculos desejados.
 
 ```{r eval=FALSE, include=FALSE}
 view(imdb)
@@ -1604,7 +1609,7 @@ imdb %>% filter(diretor == "James Cameron" | diretor == "Steven Spielberg" | dir
 imdb_lucro <- imdb %>% group_by(diretor) %>% summarise(Orçamento_médio = mean(orcamento, na.rm = TRUE), Receita_média = mean(receita, na.rm = TRUE))
 ```
 
-22. No dataframe anterior, crie a variável lucro, a partir das médias de orçamento e receita. Identifique o diretor mais lucrativo e o que dá mais prejuízo.
+7. No dataframe anterior, crie a variável lucro, a partir das médias de orçamento e receita. Identifique o diretor mais lucrativo e o que dá mais prejuízo.
 
 ```{r eval=FALSE, include=FALSE}
 # o mais lucrativo
@@ -1622,7 +1627,7 @@ imdb_lucro$posição <- paste(1:nrow(imdb_lucro),sep = "")
 imdb_lucro %>% filter(diretor == "Daniel Myrick")
 ```
 
-23. Voltando ao dataframe completo (imdb). Obtenha um dataframe que contenha somente os diretores que tiverem 3 filmes ou mais no catálogo.
+8. Voltando ao dataframe completo (imdb). Obtenha um dataframe que contenha somente os diretores que tiverem 3 filmes ou mais no catálogo.
 
 Dica1: A informação de quantos filmes cada diretor tem, não está diretamente disponível no dataframe.
 O que a gente tem é uma linha por filme.
@@ -1631,7 +1636,7 @@ Então, o mesmo diretor pode constar em várias linhas, correspondentes aos film
 Dica2: nesse caso, temos que usar o operador `%in%` ao invés de `==` porque `%in%` permite comparar objetos de tamanhos diferentes, enquanto o `==` só permite comparar objetos de tamanhos iguais, ou uma coluna com UMA informação.
 Veja o exemplo com o dataframe big_five
 
-```{r eval=FALSE, include=FALSE}
+```{r echo=TRUE}
 # no dataframe big_five, se quisermos filtrar os participantes estadunidenses, podemos usar o filter. 
 big_five %>% filter(país == "US") %>% glimpse()
 
@@ -1663,7 +1668,7 @@ vetor_diretores <- imdb_diretores_3mais$diretor
 imdb_sub1 <- imdb %>% filter(diretor %in% vetor_diretores)
 ```
 
-24. Entre os diretores com 3 filmes ou mais, qual tem maior média de nota_imdb?
+9. Entre os diretores com 3 filmes ou mais, qual tem maior média de nota_imdb?
 
 ```{r eval=FALSE, include=FALSE}
 imdb_sub1 %>% group_by(diretor) %>% summarise(média_imdb = mean(nota_imdb)) %>% arrange(desc(média_imdb))
