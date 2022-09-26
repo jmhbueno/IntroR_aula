@@ -1077,14 +1077,14 @@ df3$escore <- df3 %>% select(v1:v5) %>% rowSums()
 
 # Atribuir labels às variáveis v1 a v5
 
-df3  <- apply_labels(df3,
-       v1 = "Você costuma se atrasar para as aulas?",
-       v2 = "Quanto você confia na sua capacidade de aprender?",
-       v3 = 'Quão bem você se relaciona com outras pessoas na sua escola?',
-       v4 = 'Quanto você gosta de sua escola?',
-       v5 = 'Quanto você procrastina para estudar?')
-glimpse(df)
-glimpse(df3)
+# df3  <- apply_labels(df3,
+#        v1 = "Você costuma se atrasar para as aulas?",
+#        v2 = "Quanto você confia na sua capacidade de aprender?",
+#        v3 = 'Quão bem você se relaciona com outras pessoas na sua escola?',
+#        v4 = 'Quanto você gosta de sua escola?',
+#        v5 = 'Quanto você procrastina para estudar?')
+# glimpse(df)
+# glimpse(df3)
 ```
 
 Para unir todas as observações de df e df3 podemos usar a função `union`.
@@ -1103,6 +1103,7 @@ Para selecionar somente as observações únicas de df, podemos usar a função 
 
 ```{r}
 setdiff(df,df3)
+setdiff(df3,df)
 ```
 
 Para unir os dataframes df e df3, mas colocando uma identificação de onde veio cada observação, podemos usar `bind_rows`.
@@ -1148,7 +1149,8 @@ Dados organizados são dados em que:
 -   Cada célula é um único valor.
 
 O `tidyr` descreve uma maneira padrão de armazenamento de dados que é usada sempre que possível em todo dataframe.
-Se você garantir que seus dados estejam organizados, gastará menos tempo lutando com as ferramentas e mais tempo trabalhando em sua análise.
+
+Se você garantir que seus dados estejam organizados, poderá concentrar mais tempo em sua análise.
 
 ## Eliminar valores ausentes com a função `drop_na`
 
@@ -1167,7 +1169,7 @@ df %>% drop_na(v1:v5)
 ```{r}
 
 df %>% replace_na(list(idade = 0))
-#df %>% replace_na(list(idade = "não informado"))
+df %>% replace_na(list(idade = "não informado"))
 df %>% replace_na(list(idade = mean(idade, na.rm = TRUE)))
 ```
 
@@ -1205,7 +1207,7 @@ Muitas vezes, para realizar análises estatísticas no R, é necessário alterar
 A seguir são apresentadas algumas funções do tidyr que podem auxiliar nesse processo.
 Uma delas é a função `gather`.
 
-Suponhamos que no dataframe df as variáveis v1 a v5 são medidas de um mesmo atributo ao longo do tempo.Assim, desejamos representá-la em apenas uma coluna.\
+Suponhamos que no dataframe df as variáveis v1 a v5 são medidas de um mesmo atributo ao longo do tempo.Assim, desejamos representá-la em apenas uma coluna.
 
 Para isso, devemos informar três argumentos:
 
@@ -1240,20 +1242,21 @@ Começando pelo `pivot_longer()`, que permite montar um dataframe com **diferent
 ```{r}
 # Para usar a função pivot, os dados não podem conter labels ou levels
 # então, vamos retirar os labels dos itens v1 a v5.
+# Para isso, vamos usar a função unlab() do expss.
 
-df$v1 <- unlab(df[,9])
-df$v2 <- unlab(df[,10])
-df$v3 <- unlab(df[,11])
-df$v4 <- unlab(df[,12])
-df$v5 <- unlab(df[,13])
+# df$v1 <- unlab(df[,9])
+# df$v2 <- unlab(df[,10])
+# df$v3 <- unlab(df[,11])
+# df$v4 <- unlab(df[,12])
+# df$v5 <- unlab(df[,13])
+# 
+# glimpse(df)
 
-glimpse(df)
+df6 <- df %>% select (1,2,9:13) %>% pivot_longer(cols = 3:7,               # variáveis a serem unidas em uma só. 
+                                                 names_to = "observações", # nome dessa nova variável
+                                                 values_to = "valores")    # valores correspondentes à nova variável
 
-df6 <- df %>% select (1,2,9:13) %>% pivot_longer(cols = 3:7,                 # variáveis a serem unidas em uma só. 
-                                                 names_to = "observações",   # nome dessa nova variável
-                                                 values_to = "valores")      # valores correspondentes à nova variável
-
-df5 %>% pander::pander()
+df6 %>% pander::pander()
 # podemos inserir mais variáveis
 # podemos usar uma função para identificar as variáveis que desejamos no formato longo.
 
@@ -1278,10 +1281,11 @@ Os valores das variáveis v1 a v5 vão para uma nova variável chamada "valores"
 Para voltar o df5 para o formato amplo, podemos usar a função `pivot_wider()`.
 
 ```{r}
-#df5 %>% pivot_wider(names_from = observações,
-#                    values_from = valores)
-```
+pivot_wider(df6,
+            names_from = observações,
+            values_from = valores)
 
-```{r}
-
+pivot_wider(df5,
+            names_from = v1_a_v5,
+            values_from = valores_de_v)
 ```
