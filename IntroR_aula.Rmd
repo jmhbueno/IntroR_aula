@@ -1998,3 +1998,128 @@ pivot_wider(df5,
             names_from = v1_a_v5,
             values_from = valores_de_v)
 ```
+
+# Exercício 5
+```{r}
+ncol(imdb)
+nrow(imdb1)
+nrow(imdb2)
+
+# obter dois subsets do imdb com colunas distintas (id em comum)
+
+imdb1 <- imdb %>% slice_sample(prop = .5) %>% select(1:8)
+imdb2 <- imdb %>% slice_sample(prop = .3) %>% select(1,9:16)
+
+```
+
+
+```{r}
+left_join(imdb1,imdb2)
+
+semi_join(imdb1,imdb2)
+
+anti_join(imdb1,imdb2)
+
+inner_join(imdb1,imdb2)
+
+intersect(imdb1,imdb2)
+
+drop_na(imdb1)
+drop_na(imdb2)
+
+inner_join(drop_na(imdb1),drop_na(imdb2))
+```
+
+# Gráficos
+
+Gramática dos gráficos: comandos por camadas
+
+Três camadas: dados, estética, geom
+
+```{r}
+library(readr)
+
+big_five <- read_rds("big_five.rds")
+
+big_five20 <- big_five %>% slice(1:20)
+```
+
+## Histograma
+
+```{r}
+names(big_five)
+
+ggplot(data = big_five, aes(x = extr)) +
+  geom_histogram()
+
+ggplot(data = big_five, aes(x = neur)) +
+  geom_histogram()
+
+ggplot(data = big_five, aes(x = amab)) +
+  geom_histogram()
+
+ggplot(data = big_five, aes(x = cons)) +
+  geom_histogram()
+
+ggplot(data = big_five, aes(x = aber)) +
+  geom_histogram()
+```
+
+## Gráfico de barras
+```{r}
+names(big_five)
+
+ggplot(data = big_five, aes(x = gênero, y = ..count..)) +
+  geom_bar()
+
+
+barplot(table(big_five$idade))
+
+big_five %>% filter(idade <= 80) %>% 
+ggplot(aes(x = idade, y = ..count..)) +
+  geom_bar()
+```
+
+# Boxplot
+```{r}
+ggplot(data = big_five, aes(y = extr)) +
+  geom_boxplot()
+
+big_five %>% filter(gênero %in% c("Masculino","Feminino")) %>% 
+ggplot(aes(y = extr, x = gênero)) +
+  geom_boxplot()
+```
+
+# gráfico de linhas
+```{r}
+ggplot(data = big_five) + 
+  geom_line(aes(x = gênero, group = 1), stat = "count")
+```
+
+# Gráfico de pontos
+```{r}
+ggplot(big_five20) + 
+  geom_point(aes(x = extr, y = amab, shape = gênero), color = "#1D84B5")
+
+ggplot(data = big_five20) +
+  geom_point(aes(x = extr, y = amab), 
+             fill = "yellow", color = "red", shape = 21, size = 5)
+
+```
+
+# Combinação de geoms
+
+```{r}
+ggplot(data = big_five20, aes(x = extr, y = amab)) +
+  geom_point(color = "#61988E", shape = 16, size = 4) +
+  geom_line(stat = "smooth", method = "lm", color = "red", size = .5) +
+  labs(title = "Correlação entre Extroversão e Amabilidade",
+       x = "Extroversão",
+       y = "Amabilidade")
+
+
+ggplot(data = big_five20, aes(x = extr, y = amab)) +
+  geom_point(color = "#61988E", shape = 16, size = 2) +
+  geom_smooth()
+```
+
