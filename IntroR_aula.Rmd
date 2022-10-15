@@ -2321,7 +2321,7 @@ saveRDS(olympics,"olympics.rds")
 
 1. Baixe o arquivo [countries&continents.csv](https://docs.google.com/spreadsheets/d/1iqZcTBXF5TO5dlXTY9inRvNCB53ORlN6NfhRg3iLXoA/edit?usp=sharing) e importe-o para dentro do R como um dataframe chamado `country_cont`. Esse dataframe contém duas colunas que relacionam os **países** aos seus respectivos **continentes**. A tarefa é combinar os dois dataframes (`olympics` e `country_cont`) de modo que o novo aquivo contenha todas as informações que já estavam em `olympics` mais a coluna referente aos continentes.  
 
-```{r include=FALSE}
+```{r}
 
 country_cont <- read.csv("countries&continents.csv", encoding = "UTF-8")
 olympics <- left_join(olympics,country_cont,by = c(countries = "X.U.FEFF.country"))
@@ -2332,7 +2332,7 @@ glimpse(olympics)
 
 2. Altere a posição das colunas para o continente fique na terceira coluna, após as colunas `country` e `ioc_code`. Mantenha as demais colunas na ordem em que estão. 
 
-```{r include=FALSE}
+```{r}
 olympics <- olympics %>% select(countries, ioc_code, continent, everything())
 names(olympics)
 ```
@@ -2340,7 +2340,7 @@ names(olympics)
 
 3. Monte um dataframe chamado "medals_table" com seis colunas contendo os nomes dos 10 países que mais ganharam medalhas de ouro, de prata e de bronze nos jogos olímpicos de verão e suas respectivas quantidades.
 
-```{r include=FALSE}
+```{r}
 data.frame(
 olympics %>% arrange(desc(summer_gold)) %>% select(countries,summer_gold) %>% slice(1:10),
 olympics %>% arrange(desc(summer_silver)) %>% select(countries,summer_silver) %>% slice(1:10),
@@ -2349,7 +2349,7 @@ olympics %>% arrange(desc(summer_bronze)) %>% select(countries,summer_bronze) %>
 ```
 
 4. Identificar quais os países que ficaram sem indicação de continente e inserir o respectivo continente. Deixar como NA os casos em que os atletas disputaram sob bandeira do comitê olímpico internacional ou algo similar.
-```{r include=FALSE}
+```{r}
 olympics %>% filter(is.na(continent)) %>% select(countries,continent)
 
 # olympics1 <- olympics 
@@ -2375,14 +2375,14 @@ olympics$continent[olympics$countries == "Olympic Athletes from Russia"] <- "Asi
 ```
 
 5. Selecione os países da América do Sul que constam no dataframe e organize por número de participações em jogos olímpicos de verão
-```{r include=FALSE}
+```{r}
 names(olympics)
 
 olympics %>% filter(continent == "South America") %>% select(countries, summer_participations) %>% arrange(desc(summer_participations))
 ```
 
 6. Construa um gráfico de barras que informe o número de participações por continente
-```{r include=FALSE}
+```{r}
 ggplot(data = olympics, aes(x = continent, y = ..count..)) +
   geom_bar(color = "black", fill = "pink", size = .8) + 
   labs(x = "Continentes",
